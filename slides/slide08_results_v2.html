@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results - Prediction</title>
+    <link rel="stylesheet" href="../styles-v2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .results-slide {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 50px 80px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .slide-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 15px rgba(255,255,255,0.6);
+            text-align: center;
+        }
+
+        .slide-subtitle {
+            font-size: 1.8rem;
+            color: var(--text-dark);
+            margin-bottom: 2.5rem;
+            text-align: center;
+        }
+
+        .results-grid {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .result-cloud {
+            padding: 2rem 2.5rem;
+            border-radius: 80px;
+            text-align: center;
+            min-width: 220px;
+            position: relative;
+        }
+
+        .result-cloud::before {
+            width: 50%;
+            height: 65%;
+            top: -32%;
+            left: 10%;
+        }
+
+        .result-cloud::after {
+            width: 35%;
+            height: 50%;
+            top: -22%;
+            right: 12%;
+        }
+
+        .result-icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .result-cloud:nth-child(1) .result-icon { color: var(--accent-coral); }
+        .result-cloud:nth-child(2) .result-icon { color: var(--accent-teal); }
+        .result-cloud:nth-child(3) .result-icon { color: var(--accent-gold); }
+
+        .result-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .result-metric {
+            font-size: 1.75rem;
+            color: var(--text-medium);
+            margin-bottom: 0.5rem;
+        }
+
+        .result-desc {
+            font-size: 1.5rem;
+            color: var(--text-medium);
+            opacity: 0.8;
+        }
+
+        .result-cloud:hover {
+            transform: translateY(-10px) scale(1.03);
+        }
+
+        /* Comparison cloud */
+        .comparison-cloud {
+            padding: 2rem 3rem;
+            border-radius: 90px;
+            max-width: 700px;
+            border-bottom: 4px solid var(--accent-teal);
+        }
+
+        .comparison-cloud::before,
+        .comparison-cloud::after {
+            display: none;
+        }
+
+        .comparison-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .comparison-row {
+            display: flex;
+            justify-content: space-around;
+            gap: 2rem;
+        }
+
+        .method-score {
+            text-align: center;
+        }
+
+        .method-name {
+            font-size: 0.9rem;
+            color: var(--text-medium);
+            margin-bottom: 0.5rem;
+        }
+
+        .method-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .method-value.highlight {
+            color: var(--accent-coral);
+        }
+
+        .method-value.dim {
+            color: var(--text-medium);
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="sky-background"></div>
+
+    <div class="results-slide">
+        <h1 class="slide-title">Prediction Results</h1>
+        <p class="slide-subtitle">How well does MDDS predict human perception?</p>
+
+        <div class="results-grid">
+            <div class="cloud-container result-cloud">
+                <div class="result-icon"><i class="fas fa-chart-line"></i></div>
+                <div class="result-value">73%</div>
+                <div class="result-metric">Top-1 Accuracy</div>
+                <div class="result-desc">Correct animal predicted</div>
+            </div>
+
+            <div class="cloud-container result-cloud">
+                <div class="result-icon"><i class="fas fa-bullseye"></i></div>
+                <div class="result-value">89%</div>
+                <div class="result-metric">Top-3 Accuracy</div>
+                <div class="result-desc">In top 3 predictions</div>
+            </div>
+
+            <div class="cloud-container result-cloud">
+                <div class="result-icon"><i class="fas fa-link"></i></div>
+                <div class="result-value">0.68</div>
+                <div class="result-metric">Correlation</div>
+                <div class="result-desc">With human ratings</div>
+            </div>
+        </div>
+
+        <div class="cloud-container comparison-cloud">
+            <h3 class="comparison-title">Method Comparison (Top-1 Accuracy)</h3>
+            <div class="comparison-row">
+                <div class="method-score">
+                    <div class="method-name">CLIP Only</div>
+                    <div class="method-value dim">58%</div>
+                </div>
+                <div class="method-score">
+                    <div class="method-name">OneFormer</div>
+                    <div class="method-value dim">62%</div>
+                </div>
+                <div class="method-score">
+                    <div class="method-name">MDDS (Ours)</div>
+                    <div class="method-value highlight">73%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why DDS Fails For Our Task</title>
+    <link rel="stylesheet" href="../styles-v2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .problem-slide {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 40px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .slide-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 0 0 1.5rem 0;
+            text-shadow: 0 2px 15px rgba(255,255,255,0.6);
+            text-align: center;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        /* Input row - fixed position */
+        .input-row {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .image-box {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+            background: white;
+        }
+
+        .image-box img {
+            display: block;
+            height: 120px;
+            width: auto;
+        }
+
+        .image-label {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            color: #2c3e50;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+
+        /* Method buttons */
+        .method-buttons {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .method-btn {
+            padding: 1rem 2.5rem;
+            border-radius: 30px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+        }
+
+        .method-btn.dds {
+            background: white;
+            color: #e76f51;
+            border-color: #e76f51;
+        }
+
+        .method-btn.dds:hover, .method-btn.dds.active {
+            background: #e76f51;
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .method-btn.mdds {
+            background: white;
+            color: #7eb6d9;
+            border-color: #7eb6d9;
+        }
+
+        .method-btn.mdds:hover, .method-btn.mdds.active {
+            background: #7eb6d9;
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* Results container - fixed height */
+        .results-container {
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Results panel */
+        .results-panel {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem 2rem;
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .results-panel.visible {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .results-row {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .result-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .result-item .image-box img {
+            height: 160px;
+        }
+
+        .result-badge {
+            margin-top: 0.5rem;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 600;
+        }
+
+        .result-badge.bad {
+            background: rgba(231, 111, 81, 0.1);
+            color: #d35f47;
+            border: 2px solid #e76f51;
+        }
+
+        .result-badge.good {
+            background: rgba(126, 182, 217, 0.1);
+            color: #6aa6c9;
+            border: 2px solid #7eb6d9;
+        }
+
+        .small-arrow {
+            font-size: 1.75rem;
+            color: #e76f51;
+        }
+
+        /* Citation */
+        .citation {
+            position: absolute;
+            bottom: 25px;
+            left: 40px;
+            font-size: 1.75rem;
+            color: var(--text-medium);
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="sky-background"></div>
+
+    <div class="problem-slide">
+        <h1 class="slide-title">Why DDS Fails For Our Task</h1>
+
+        <div class="main-content">
+            <!-- Input -->
+            <div class="input-row">
+                <div>
+                    <div class="image-box">
+                        <img src="../fig42_a_original.jpeg" alt="Original">
+                    </div>
+                    <div class="image-label">Original</div>
+                </div>
+                <div>
+                    <div class="image-box">
+                        <img src="../fig42_b_mask.jpeg" alt="Mask">
+                    </div>
+                    <div class="image-label">Mask</div>
+                </div>
+            </div>
+
+            <!-- Method buttons -->
+            <div class="method-buttons">
+                <button class="method-btn dds" data-method="dds">DDS</button>
+                <button class="method-btn mdds" data-method="mdds">MDDS (Ours)</button>
+            </div>
+
+            <!-- Results container with fixed height -->
+            <div class="results-container">
+                <!-- DDS Results -->
+                <div class="results-panel" id="dds-results">
+                    <div class="results-row">
+                        <div class="result-item">
+                            <div class="image-box">
+                                <img src="../fig42_d_dds.jpeg" alt="DDS result">
+                            </div>
+                            <div class="image-label">DDS Result</div>
+                            <div class="result-badge bad">
+                                <i class="fas fa-times"></i> Outside mask edits
+                            </div>
+                        </div>
+                        <div class="small-arrow"><i class="fas fa-arrow-right"></i></div>
+                        <div class="result-item">
+                            <div class="image-box">
+                                <img src="../fig42_e_dds_masked.jpeg" alt="DDS + Mask">
+                            </div>
+                            <div class="image-label">DDS + Mask</div>
+                            <div class="result-badge bad">
+                                <i class="fas fa-times"></i> Shape destroyed
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MDDS Results -->
+                <div class="results-panel" id="mdds-results">
+                    <div class="result-item">
+                        <div class="image-box">
+                            <img src="../fig42_c_mdds.jpeg" alt="MDDS result">
+                        </div>
+                        <div class="image-label">MDDS Result</div>
+                        <div class="result-badge good">
+                            <i class="fas fa-check"></i> Preserves cloud texture
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const ddsBtn = document.querySelector('.method-btn.dds');
+        const mddsBtn = document.querySelector('.method-btn.mdds');
+        const ddsResults = document.getElementById('dds-results');
+        const mddsResults = document.getElementById('mdds-results');
+
+        ddsBtn.addEventListener('click', () => {
+            ddsBtn.classList.add('active');
+            mddsBtn.classList.remove('active');
+            ddsResults.classList.add('visible');
+            mddsResults.classList.remove('visible');
+        });
+
+        mddsBtn.addEventListener('click', () => {
+            mddsBtn.classList.add('active');
+            ddsBtn.classList.remove('active');
+            mddsResults.classList.add('visible');
+            ddsResults.classList.remove('visible');
+        });
+    </script>
+</body>
+</html>

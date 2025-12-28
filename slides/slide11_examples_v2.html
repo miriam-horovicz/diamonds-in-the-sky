@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examples</title>
+    <link rel="stylesheet" href="../styles-v2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .examples-slide {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 60px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .slide-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 2rem;
+            text-shadow: 0 2px 15px rgba(255,255,255,0.6);
+            text-align: center;
+        }
+
+        .instruction {
+            font-size: 1.75rem;
+            color: var(--text-medium);
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+
+        .instruction i {
+            color: var(--accent-gold);
+            margin-right: 0.5rem;
+        }
+
+        .examples-grid {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .example-cloud {
+            padding: 1.5rem;
+            border-radius: 100px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .example-cloud::before {
+            width: 45%;
+            height: 70%;
+            top: -35%;
+            left: 12%;
+        }
+
+        .example-cloud::after {
+            width: 35%;
+            height: 55%;
+            top: -25%;
+            right: 15%;
+        }
+
+        .example-image {
+            width: 280px;
+            height: 220px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 0 auto 1rem;
+            position: relative;
+            z-index: 5;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .example-image img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.4s ease;
+        }
+
+        .example-image .original {
+            opacity: 1;
+        }
+
+        .example-image .enhanced {
+            opacity: 0;
+        }
+
+        .example-cloud.revealed .original {
+            opacity: 0;
+        }
+
+        .example-cloud.revealed .enhanced {
+            opacity: 1;
+        }
+
+        .example-label {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            position: relative;
+            z-index: 5;
+        }
+
+        .label-original {
+            color: var(--text-dark);
+        }
+
+        .label-enhanced {
+            display: none;
+            color: var(--accent-coral);
+        }
+
+        .example-cloud.revealed .label-original {
+            display: none;
+        }
+
+        .example-cloud.revealed .label-enhanced {
+            display: inline;
+        }
+
+        .example-cloud:hover {
+            transform: translateY(-10px) scale(1.02);
+        }
+    </style>
+</head>
+<body>
+    <div class="sky-background"></div>
+
+    <div class="examples-slide">
+        <h1 class="slide-title">Examples</h1>
+
+        <p class="instruction">
+            <i class="fas fa-hand-pointer"></i> Click to reveal the enhanced version
+        </p>
+
+        <div class="examples-grid">
+            <div class="cloud-container example-cloud" data-animal="Cat">
+                <div class="example-image">
+                    <img src="../1_original.gif" alt="Original" class="original">
+                    <img src="../1_after.jpeg" alt="Enhanced" class="enhanced">
+                </div>
+                <p class="example-label">
+                    <span class="label-original">Cloud</span>
+                    <span class="label-enhanced">Cat</span>
+                </p>
+            </div>
+
+            <div class="cloud-container example-cloud" data-animal="Dog">
+                <div class="example-image">
+                    <img src="../2_original.gif" alt="Original" class="original">
+                    <img src="../2_after.jpeg" alt="Enhanced" class="enhanced">
+                </div>
+                <p class="example-label">
+                    <span class="label-original">Cloud</span>
+                    <span class="label-enhanced">Dog</span>
+                </p>
+            </div>
+
+            <div class="cloud-container example-cloud" data-animal="Bird">
+                <div class="example-image">
+                    <img src="../3_original.gif" alt="Original" class="original">
+                    <img src="../3_after.jpeg" alt="Enhanced" class="enhanced">
+                </div>
+                <p class="example-label">
+                    <span class="label-original">Cloud</span>
+                    <span class="label-enhanced">Bird</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.example-cloud').forEach(cloud => {
+            cloud.addEventListener('click', function() {
+                this.classList.toggle('revealed');
+            });
+        });
+    </script>
+</body>
+</html>

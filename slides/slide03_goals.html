@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Goals</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .content-slide {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px 100px;
+        }
+
+        .section-header {
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 600;
+            color: white;
+            text-shadow: 0 3px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .goals-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .goal-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            padding: 2.5rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .goal-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            border-radius: 24px 24px 0 0;
+        }
+
+        .goal-card:nth-child(1)::before {
+            background: linear-gradient(90deg, #ffd700, #ff7e5f);
+        }
+
+        .goal-card:nth-child(2)::before {
+            background: linear-gradient(90deg, #87CEEB, #7b68ee);
+        }
+
+        .goal-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .goal-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 700;
+            opacity: 0.15;
+            position: absolute;
+            top: 15px;
+            right: 25px;
+        }
+
+        .goal-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .goal-card:nth-child(1) .goal-icon { color: #ffd700; }
+        .goal-card:nth-child(2) .goal-icon { color: #87CEEB; }
+
+        .goal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .goal-description {
+            font-size: 1.15rem;
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.6;
+        }
+
+        .goal-keyword {
+            color: #ffd700;
+            font-weight: 600;
+        }
+
+        .approach-note {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 1.5rem 2rem;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .approach-note p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .approach-note i {
+            color: #ffd700;
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="sky-background"></div>
+    <div class="clouds-container">
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+        <div class="cloud cloud-3"></div>
+    </div>
+
+    <div class="content-slide">
+        <div class="section-header">
+            <h1 class="section-title">Research Goals</h1>
+        </div>
+
+        <div class="goals-container">
+            <div class="goal-card">
+                <span class="goal-number">1</span>
+                <div class="goal-icon"><i class="fas fa-search"></i></div>
+                <h2 class="goal-title">Predict</h2>
+                <p class="goal-description">
+                    Which <span class="goal-keyword">animals</span> are likely to be
+                    <span class="goal-keyword">pareidolically perceived</span> in a given cloud image?
+                </p>
+            </div>
+
+            <div class="goal-card">
+                <span class="goal-number">2</span>
+                <div class="goal-icon"><i class="fas fa-eye"></i></div>
+                <h2 class="goal-title">Enhance</h2>
+                <p class="goal-description">
+                    Help individuals <span class="goal-keyword">perceive</span> specific pareidolic animals,
+                    even if they <span class="goal-keyword">didn't see them</span> initially.
+                </p>
+            </div>
+        </div>
+
+        <div class="approach-note">
+            <p>
+                <i class="fas fa-lightbulb"></i>
+                <strong>Key insight:</strong> A subtle visual hint is often enough to trigger pareidolic perception
+            </p>
+        </div>
+    </div>
+</body>
+</html>

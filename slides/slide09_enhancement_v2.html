@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhancement</title>
+    <link rel="stylesheet" href="../styles-v2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .enhancement-slide {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 60px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .slide-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 2.5rem;
+            text-shadow: 0 2px 15px rgba(255,255,255,0.6);
+            text-align: center;
+        }
+
+        .demo-row {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .demo-cloud {
+            padding: 1.5rem;
+            border-radius: 100px;
+            text-align: center;
+            position: relative;
+        }
+
+        .demo-cloud::before {
+            width: 45%;
+            height: 70%;
+            top: -35%;
+            left: 12%;
+        }
+
+        .demo-cloud::after {
+            width: 35%;
+            height: 55%;
+            top: -25%;
+            right: 15%;
+        }
+
+        .demo-image {
+            width: 280px;
+            height: 200px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 0 auto 1rem;
+            position: relative;
+            z-index: 5;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .demo-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .demo-label {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            position: relative;
+            z-index: 5;
+        }
+
+        .arrow {
+            font-size: 2.5rem;
+            color: var(--accent-gold);
+        }
+
+        .demo-cloud:hover {
+            transform: translateY(-8px) scale(1.02);
+        }
+
+        .demo-cloud.original {
+            border-bottom: 4px solid var(--sky-deep);
+        }
+
+        .demo-cloud.process {
+            border-bottom: 4px solid var(--accent-gold);
+        }
+
+        .demo-cloud.after {
+            border-bottom: 4px solid var(--accent-teal);
+        }
+    </style>
+</head>
+<body>
+    <div class="sky-background"></div>
+
+    <div class="enhancement-slide">
+        <h1 class="slide-title">Enhancement</h1>
+
+        <div class="demo-row">
+            <div class="cloud-container demo-cloud original">
+                <div class="demo-image">
+                    <img src="../1_original.gif" alt="Original cloud">
+                </div>
+                <p class="demo-label">Original</p>
+            </div>
+
+            <div class="arrow">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+
+            <div class="cloud-container demo-cloud process">
+                <div class="demo-image">
+                    <img src="../1_video.gif" alt="Enhancement process">
+                </div>
+                <p class="demo-label">Process</p>
+            </div>
+
+            <div class="arrow">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+
+            <div class="cloud-container demo-cloud after">
+                <div class="demo-image">
+                    <img src="../1_after.jpeg" alt="Enhanced cloud">
+                </div>
+                <p class="demo-label">Enhanced</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

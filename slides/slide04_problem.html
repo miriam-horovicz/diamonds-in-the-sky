@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Problem</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .content-slide {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px 100px;
+        }
+
+        .section-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 600;
+            color: white;
+            text-shadow: 0 3px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .problem-statement {
+            background: linear-gradient(135deg, rgba(255, 99, 71, 0.2), rgba(255, 69, 0, 0.15));
+            border-left: 5px solid #ff6347;
+            border-radius: 0 20px 20px 0;
+            padding: 2rem 2.5rem;
+            margin-bottom: 2.5rem;
+            max-width: 900px;
+        }
+
+        .problem-statement p {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 0.95);
+            line-height: 1.6;
+        }
+
+        .comparison-section {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 2rem;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        .comparison-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .comparison-card.fail {
+            border-color: rgba(255, 99, 71, 0.4);
+        }
+
+        .comparison-card.success {
+            border-color: rgba(50, 205, 50, 0.4);
+        }
+
+        .card-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .fail .card-icon { color: #ff6347; }
+        .success .card-icon { color: #32cd32; }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .card-list {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+        }
+
+        .card-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .card-list li i {
+            font-size: 0.9rem;
+        }
+
+        .fail .card-list li i { color: #ff6347; }
+        .success .card-list li i { color: #32cd32; }
+
+        .vs-badge {
+            background: rgba(255, 215, 0, 0.2);
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #ffd700;
+            font-size: 1.2rem;
+        }
+
+        .why-box {
+            margin-top: 2rem;
+            padding: 1.5rem 2rem;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            max-width: 700px;
+        }
+
+        .why-box p {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .why-box strong {
+            color: #ffd700;
+        }
+    </style>
+</head>
+<body>
+    <div class="sky-background"></div>
+    <div class="clouds-container">
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+    </div>
+
+    <div class="content-slide">
+        <div class="section-header">
+            <h1 class="section-title">The Problem</h1>
+        </div>
+
+        <div class="problem-statement">
+            <p>
+                State-of-the-art object detectors <strong>fail</strong> to recognize pareidolic animals
+                in clouds - the object doesn't actually exist in the image!
+            </p>
+        </div>
+
+        <div class="comparison-section">
+            <div class="comparison-card fail">
+                <div class="card-icon"><i class="fas fa-robot"></i></div>
+                <h3 class="card-title">SOTA Detectors</h3>
+                <ul class="card-list">
+                    <li><i class="fas fa-times"></i> OneFormer - No detection</li>
+                    <li><i class="fas fa-times"></i> CLIP - No recognition</li>
+                    <li><i class="fas fa-times"></i> Need clear boundaries</li>
+                    <li><i class="fas fa-times"></i> Need actual objects</li>
+                </ul>
+            </div>
+
+            <div class="vs-badge">VS</div>
+
+            <div class="comparison-card success">
+                <div class="card-icon"><i class="fas fa-user"></i></div>
+                <h3 class="card-title">Humans</h3>
+                <ul class="card-list">
+                    <li><i class="fas fa-check"></i> See shapes in clouds</li>
+                    <li><i class="fas fa-check"></i> Use imagination</li>
+                    <li><i class="fas fa-check"></i> Handle ambiguity</li>
+                    <li><i class="fas fa-check"></i> Respond to hints</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="why-box">
+            <p>
+                <strong>Why?</strong> Clouds lack clarity, context, and defined features that
+                traditional detection systems rely on.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

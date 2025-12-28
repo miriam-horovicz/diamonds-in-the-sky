@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What is Pareidolia?</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .content-slide {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px 100px;
+        }
+
+        .section-header {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 600;
+            color: white;
+            text-shadow: 0 3px 20px rgba(0, 0, 0, 0.3);
+            margin-bottom: 0.5rem;
+        }
+
+        .title-underline {
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #ffd700, #ff7e5f);
+            border-radius: 2px;
+        }
+
+        .definition-box {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-left: 5px solid #ffd700;
+            border-radius: 0 20px 20px 0;
+            padding: 2rem 2.5rem;
+            margin-bottom: 2.5rem;
+            max-width: 900px;
+        }
+
+        .definition-text {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.95);
+            line-height: 1.6;
+        }
+
+        .definition-text em {
+            color: #ffd700;
+            font-style: normal;
+            font-weight: 600;
+        }
+
+        .examples-section {
+            margin-top: 2rem;
+        }
+
+        .examples-title {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .examples-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .example-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .example-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .example-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .example-card:nth-child(1) .example-icon { color: #87CEEB; }
+        .example-card:nth-child(2) .example-icon { color: #deb887; }
+        .example-card:nth-child(3) .example-icon { color: #ffd700; }
+        .example-card:nth-child(4) .example-icon { color: #ff6347; }
+
+        .example-label {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .brain-note {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 2.5rem;
+            padding: 1.5rem 2rem;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 126, 95, 0.1));
+            border-radius: 16px;
+            max-width: 800px;
+        }
+
+        .brain-note i {
+            font-size: 2.5rem;
+            color: #ffd700;
+        }
+
+        .brain-note p {
+            font-size: 1.15rem;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="sky-background"></div>
+    <div class="clouds-container">
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+        <div class="cloud cloud-3"></div>
+    </div>
+
+    <div class="content-slide">
+        <div class="section-header">
+            <h1 class="section-title">What is Pareidolia?</h1>
+            <div class="title-underline"></div>
+        </div>
+
+        <div class="definition-box">
+            <p class="definition-text">
+                A psychological phenomenon where people perceive <em>familiar patterns</em> -
+                especially faces or animal shapes - in <em>random or ambiguous</em> visual stimuli.
+            </p>
+        </div>
+
+        <div class="examples-section">
+            <p class="examples-title">Common Examples</p>
+            <div class="examples-grid">
+                <div class="example-card">
+                    <div class="example-icon"><i class="fas fa-cloud"></i></div>
+                    <p class="example-label">Cloud formations</p>
+                </div>
+                <div class="example-card">
+                    <div class="example-icon"><i class="fas fa-mountain"></i></div>
+                    <p class="example-label">Rock formations</p>
+                </div>
+                <div class="example-card">
+                    <div class="example-icon"><i class="fas fa-moon"></i></div>
+                    <p class="example-label">"Face" on the Moon</p>
+                </div>
+                <div class="example-card">
+                    <div class="example-icon"><i class="fas fa-bread-slice"></i></div>
+                    <p class="example-label">Toast patterns</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="brain-note">
+            <i class="fas fa-brain"></i>
+            <p>
+                <strong>Evolutionary advantage:</strong> Our brains are wired to quickly identify
+                meaningful patterns - this helped ancestors spot threats and opportunities.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

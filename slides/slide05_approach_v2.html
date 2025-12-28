@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Pipeline</title>
+    <link rel="stylesheet" href="../styles-v2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .method-slide {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px 15px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .slide-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 0;
+            text-shadow: 0 2px 15px rgba(255,255,255,0.6);
+            text-align: center;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bottom-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.3rem;
+            padding-bottom: 5px;
+        }
+
+        /* Pipeline container */
+        .pipeline {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.2rem;
+            padding: 1.5rem 2rem;
+        }
+
+        /* Pipeline step */
+        .pipeline-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .pipeline-step.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .pipeline-step.active {
+            transform: scale(1.02);
+        }
+
+        .step-label {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            text-align: center;
+            color: var(--accent-coral);
+            text-shadow: 0 1px 8px rgba(255,255,255,0.8);
+        }
+
+        .step-sublabel {
+            font-size: 1.75rem;
+            color: var(--text-medium);
+            margin-top: 0.3rem;
+            text-align: center;
+            font-style: italic;
+        }
+
+        /* Image containers */
+        .step-image {
+            border-radius: 10px;
+            overflow: visible;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease, z-index 0s;
+        }
+
+        .step-image:hover {
+            transform: scale(1.4);
+            z-index: 100;
+        }
+
+        .step-image img {
+            display: block;
+            height: 140px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .step-image.large img {
+            height: 240px;
+        }
+
+        /* Overlay boxes on input image showing segment regions */
+        .input-container {
+            position: relative;
+        }
+
+        .segment-box {
+            position: absolute;
+            border: 3px dashed;
+            border-radius: 8px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+
+        .segment-box.visible {
+            opacity: 1;
+        }
+
+        .segment-box.box-1 {
+            border-color: var(--accent-coral);
+            top: 15%;
+            left: 10%;
+            width: 60%;
+            height: 50%;
+        }
+
+        .segment-box.box-2 {
+            border-color: var(--accent-teal);
+            top: 25%;
+            right: 5%;
+            width: 22%;
+            height: 28%;
+        }
+
+        .segment-box.box-3 {
+            border-color: var(--accent-gold);
+            bottom: 0%;
+            left: 5%;
+            width: 28%;
+            height: 32%;
+        }
+
+        .segment-box .box-num {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .box-1 .box-num { background: var(--accent-coral); }
+        .box-2 .box-num { background: var(--accent-teal); }
+        .box-3 .box-num { background: var(--accent-gold); }
+
+        /* Arrow between steps */
+        .pipeline-arrow {
+            font-size: 1.75rem;
+            color: var(--accent-coral);
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+
+        .pipeline-arrow.visible {
+            opacity: 1;
+        }
+
+        /* Segmented images column */
+        .segments-column {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            align-items: center;
+        }
+
+        .segments-column .step-image {
+            position: relative;
+        }
+
+        .segments-column .step-image img {
+            height: 115px;
+        }
+
+        .segments-column .step-image::before {
+            content: attr(data-num);
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: white;
+            z-index: 10;
+        }
+
+        .segments-column .step-image.seg-1 { border: 3px solid var(--accent-coral); }
+        .segments-column .step-image.seg-1::before { background: var(--accent-coral); }
+
+        .segments-column .step-image.seg-2 { border: 3px solid var(--accent-teal); }
+        .segments-column .step-image.seg-2::before { background: var(--accent-teal); }
+
+        .segments-column .step-image.seg-3 { border: 3px solid var(--accent-gold); }
+        .segments-column .step-image.seg-3::before { background: var(--accent-gold); }
+
+        /* Fade out segments 1 and 2 when MDDS step is shown */
+        .segments-column .step-image.faded {
+            opacity: 0.25;
+            transform: scale(0.9);
+        }
+
+        /* MDDS results column */
+        .mdds-column {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            align-items: center;
+        }
+
+        .mdds-item {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .mdds-item .step-image img {
+            height: 100px;
+        }
+
+        .mdds-label {
+            font-size: 1.75rem;
+            color: var(--text-dark);
+            font-weight: 700;
+            min-width: 65px;
+        }
+
+        /* Validation column */
+        .validation-column {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            align-items: center;
+        }
+
+        .validation-item {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .validation-item .step-image img {
+            height: 100px;
+        }
+
+        .check-icon {
+            color: #2ecc71;
+            font-size: 2rem;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .x-icon {
+            color: #e74c3c;
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            transform: rotate(15deg);
+        }
+
+        .validation-item:last-child .step-image {
+            opacity: 0.6;
+            position: relative;
+        }
+
+        .validation-item:last-child .step-image::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: -5%;
+            width: 110%;
+            height: 4px;
+            background: #e74c3c;
+            transform: rotate(-15deg);
+        }
+
+        /* Controls - buttons only */
+        .controls {
+            margin-top: 1rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .control-btn {
+            background: white;
+            border: 2px solid var(--accent-coral);
+            padding: 0.6rem 1.2rem;
+            border-radius: 25px;
+            font-size: 1.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            color: var(--accent-coral);
+            font-weight: 600;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+            background: var(--accent-coral);
+            color: white;
+        }
+
+        .control-btn.primary {
+            background: var(--accent-coral);
+            color: white;
+        }
+
+        .control-btn.primary:hover {
+            background: #d35f47;
+        }
+
+        .control-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Progress dots */
+        .progress-dots {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.8rem;
+        }
+
+        .progress-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ddd;
+            transition: all 0.3s ease;
+        }
+
+        .progress-dot.active {
+            background: var(--accent-coral);
+            transform: scale(1.2);
+        }
+
+        .progress-dot.completed {
+            background: var(--accent-teal);
+        }
+    </style>
+</head>
+<body>
+    <div class="sky-background"></div>
+
+    <div class="method-slide">
+        <h1 class="slide-title">Our Pipeline</h1>
+
+        <div class="main-content">
+        <div class="pipeline">
+            <!-- Step 1: Input Image -->
+            <div class="pipeline-step" id="step-1">
+                <div class="step-label">Input</div>
+                <div class="step-image large input-container">
+                    <img src="../fig_input.jpeg" alt="Input sky image">
+                    <div class="segment-box box-1" id="box-1"><span class="box-num">1</span></div>
+                    <div class="segment-box box-2" id="box-2"><span class="box-num">2</span></div>
+                    <div class="segment-box box-3" id="box-3"><span class="box-num">3</span></div>
+                </div>
+                            </div>
+
+            <div class="pipeline-arrow" id="arrow-1"><i class="fas fa-arrow-right"></i></div>
+
+            <!-- Step 2: Segmentation -->
+            <div class="pipeline-step" id="step-2">
+                <div class="step-label">Segmentation</div>
+                <div class="segments-column">
+                    <div class="step-image seg-1" data-num="1"><img src="../fig_seg1.jpeg" alt="Segment 1"></div>
+                    <div class="step-image seg-2" data-num="2"><img src="../fig_seg2.jpeg" alt="Segment 2"></div>
+                    <div class="step-image seg-3" data-num="3"><img src="../fig_seg3.jpeg" alt="Segment 3"></div>
+                </div>
+                            </div>
+
+            <div class="pipeline-arrow" id="arrow-2"><i class="fas fa-arrow-right"></i></div>
+
+            <!-- Step 3: MDDS Diffusion -->
+            <div class="pipeline-step" id="step-3">
+                <div class="step-label">Generation (MDDS)</div>
+                <div class="mdds-column">
+                    <div class="mdds-item">
+                        <span class="mdds-label">sheep</span>
+                        <div class="step-image"><img src="../fig_mdds_sheep.jpeg" alt="Sheep"></div>
+                    </div>
+                    <div class="mdds-item">
+                        <span class="mdds-label">cat</span>
+                        <div class="step-image"><img src="../fig_mdds_cat.jpeg" alt="Cat"></div>
+                    </div>
+                    <div class="mdds-item">
+                        <span class="mdds-label">dog</span>
+                        <div class="step-image"><img src="../fig_mdds_dog.jpeg" alt="Dog"></div>
+                    </div>
+                    <div class="mdds-item">
+                        <span class="mdds-label">giraffe</span>
+                        <div class="step-image"><img src="../fig_mdds_giraffe.jpeg" alt="Giraffe"></div>
+                    </div>
+                </div>
+                            </div>
+
+            <div class="pipeline-arrow" id="arrow-3"><i class="fas fa-arrow-right"></i></div>
+
+            <!-- Step 4: Validation -->
+            <div class="pipeline-step" id="step-4">
+                <div class="step-label">Validation</div>
+                <div class="validation-column">
+                    <div class="validation-item">
+                        <div class="step-image"><img src="../fig_mdds_sheep.jpeg" alt="Accepted"></div>
+                        <i class="fas fa-check check-icon"></i>
+                    </div>
+                    <div class="validation-item">
+                        <div class="step-image"><img src="../fig_mdds_cat.jpeg" alt="Accepted"></div>
+                        <i class="fas fa-check check-icon"></i>
+                    </div>
+                    <div class="validation-item">
+                        <div class="step-image"><img src="../fig_mdds_dog.jpeg" alt="Accepted"></div>
+                        <i class="fas fa-check check-icon"></i>
+                    </div>
+                    <div class="validation-item">
+                        <div class="step-image"><img src="../fig_mdds_giraffe.jpeg" alt="Rejected"></div>
+                        <i class="fas fa-times x-icon"></i>
+                    </div>
+                </div>
+                            </div>
+        </div>
+        </div>
+
+        <div class="bottom-controls">
+            <div class="progress-dots">
+                <div class="progress-dot" id="dot-1"></div>
+                <div class="progress-dot" id="dot-2"></div>
+                <div class="progress-dot" id="dot-3"></div>
+                <div class="progress-dot" id="dot-4"></div>
+            </div>
+
+            <div class="controls">
+                <button class="control-btn" id="reset-btn">
+                    <i class="fas fa-redo"></i> Reset
+                </button>
+                <button class="control-btn primary" id="next-btn">
+                    Next <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+
+        const nextBtn = document.getElementById('next-btn');
+        const resetBtn = document.getElementById('reset-btn');
+
+        function updateView() {
+            for (let i = 1; i <= 4; i++) {
+                const step = document.getElementById(`step-${i}`);
+                const dot = document.getElementById(`dot-${i}`);
+
+                step.classList.remove('visible', 'active');
+                dot.classList.remove('active', 'completed');
+
+                if (i <= currentStep) {
+                    step.classList.add('visible');
+                    if (i === currentStep) {
+                        step.classList.add('active');
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.add('completed');
+                    }
+                }
+            }
+
+            for (let i = 1; i <= 3; i++) {
+                const arrow = document.getElementById(`arrow-${i}`);
+                arrow.classList.remove('visible');
+                if (i < currentStep) {
+                    arrow.classList.add('visible');
+                }
+            }
+
+            // Show segment boxes on input image when step 2+ is revealed
+            // Keep them visible for all subsequent steps
+            for (let i = 1; i <= 3; i++) {
+                const box = document.getElementById(`box-${i}`);
+                if (currentStep >= 2) {
+                    box.classList.add('visible');
+                    box.style.opacity = '1';
+                } else {
+                    box.classList.remove('visible');
+                }
+            }
+
+            // Fade segments 1 and 2 when MDDS step is shown
+            const seg1 = document.querySelector('.seg-1');
+            const seg2 = document.querySelector('.seg-2');
+            if (currentStep >= 3) {
+                seg1.classList.add('faded');
+                seg2.classList.add('faded');
+            } else {
+                seg1.classList.remove('faded');
+                seg2.classList.remove('faded');
+            }
+
+            nextBtn.disabled = currentStep >= 4;
+        }
+
+        nextBtn.addEventListener('click', () => {
+            if (currentStep < 4) {
+                currentStep++;
+                updateView();
+            }
+        });
+
+        resetBtn.addEventListener('click', () => {
+            currentStep = 1;
+            updateView();
+        });
+
+        updateView();
+    </script>
+</body>
+</html>

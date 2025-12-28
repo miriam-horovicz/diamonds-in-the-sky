@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Approach</title>
+    <link rel="stylesheet" href="../styles-v2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .approach-slide {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 60px 60px 40px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .slide-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 700;
+            color: #2c3e50;
+            text-shadow: 0 2px 15px rgba(255,255,255,0.6);
+            margin-bottom: 2rem;
+        }
+
+        /* Key insight group */
+        .insight-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .key-insight {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            color: white;
+            text-align: center;
+            background: #7eb6d9;
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(126, 182, 217, 0.4);
+            margin: 0;
+        }
+
+        .key-insight strong {
+            color: #2c3e50;
+            font-weight: 700;
+        }
+
+        /* Visual flow */
+        .flow-section {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .flow-card {
+            background: white;
+            border-radius: 20px;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .flow-card img {
+            width: 140px;
+            height: 105px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .flow-card.modified img {
+            border: 3px solid #7eb6d9;
+        }
+
+        .flow-label {
+            font-size: 1.75rem;
+            color: var(--text-dark);
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .arrow-icon {
+            font-size: 2rem;
+            color: #e76f51;
+        }
+
+        .edit-icon {
+            font-size: 2.5rem;
+            color: #7eb6d9;
+        }
+
+        /* Principles */
+        .principles-row {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .principle {
+            background: white;
+            border-radius: 50px;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+        }
+
+        .principle-icon {
+            font-size: 2rem;
+            color: #e76f51;
+        }
+
+        .principle-text {
+            font-size: 1.9rem;
+            color: var(--text-dark);
+        }
+
+        /* Tasks solved - flip cards */
+        .tasks-row {
+            display: flex;
+            gap: 4rem;
+            align-items: center;
+            margin-top: 30px;
+        }
+
+        .flip-card {
+            width: 280px;
+            height: 260px;
+            perspective: 1000px;
+            cursor: pointer;
+            margin-top: 70px;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            overflow: visible;
+        }
+
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 1.5rem;
+            box-sizing: border-box;
+        }
+
+        .flip-card-front {
+            background: white;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+        }
+
+        .flip-card-front::before {
+            content: '';
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            width: 45%;
+            height: 55%;
+            top: -28%;
+            left: 12%;
+            box-shadow: 35% 8% 0 8% white, 70% 4% 0 4% white;
+        }
+
+        .flip-card-front::after {
+            content: '';
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            width: 30%;
+            height: 40%;
+            top: -18%;
+            right: 15%;
+        }
+
+        .flip-card:nth-child(1) .flip-card-front { border-bottom: 4px solid #7eb6d9; }
+        .flip-card:nth-child(3) .flip-card-front { border-bottom: 4px solid #e76f51; }
+
+        .flip-card-back {
+            background: white;
+            transform: rotateY(180deg);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .flip-card-back::before {
+            content: '';
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            width: 45%;
+            height: 55%;
+            top: -28%;
+            left: 12%;
+            box-shadow: 35% 8% 0 8% white, 70% 4% 0 4% white;
+        }
+
+        .flip-card-back::after {
+            content: '';
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            width: 30%;
+            height: 40%;
+            top: -18%;
+            right: 15%;
+        }
+
+        .flip-card:nth-child(1) .flip-card-back { border-bottom: 4px solid #7eb6d9; }
+        .flip-card:nth-child(3) .flip-card-back { border-bottom: 4px solid #e76f51; }
+
+        .task-icon {
+            font-size: 3.5rem;
+            margin-bottom: 0.8rem;
+            position: relative;
+            z-index: 5;
+        }
+
+        .flip-card:nth-child(1) .task-icon { color: #7eb6d9; }
+        .flip-card:nth-child(3) .task-icon { color: #e76f51; }
+
+        .task-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            position: relative;
+            z-index: 5;
+        }
+
+        .flip-card:nth-child(1) .task-number { color: #7eb6d9; }
+        .flip-card:nth-child(3) .task-number { color: #e76f51; }
+
+        .task-label {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            color: var(--text-dark);
+            font-weight: 600;
+            position: relative;
+            z-index: 5;
+        }
+
+        .back-image {
+            width: 160px;
+            height: 120px;
+            border-radius: 12px;
+            object-fit: cover;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            position: relative;
+            z-index: 5;
+            margin-bottom: 0.8rem;
+        }
+
+        .back-label {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            position: relative;
+            z-index: 5;
+        }
+
+        .flip-card:nth-child(1) .back-label { color: #7eb6d9; }
+        .flip-card:nth-child(2) .back-label { color: #e76f51; }
+    </style>
+</head>
+<body>
+    <div class="sky-background"></div>
+
+    <div class="approach-slide">
+        <h1 class="slide-title">Our Approach</h1>
+
+        <div class="insight-group">
+            <p class="key-insight">
+                <strong>Subtle image modification</strong> instead of training
+            </p>
+            <div class="principles-row">
+                <div class="principle">
+                    <i class="fas fa-equals principle-icon"></i>
+                    <span class="principle-text">Similar to original</span>
+                </div>
+                <div class="principle">
+                    <i class="fas fa-paw principle-icon"></i>
+                    <span class="principle-text">Animal recognizable</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tasks solved - flip cards -->
+        <div class="tasks-row">
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <div class="task-icon"><i class="fas fa-eye"></i></div>
+                        <div class="task-number">1</div>
+                        <h3 class="task-label">Predict</h3>
+                    </div>
+                    <div class="flip-card-back">
+                        <img src="../2_original.jpg" alt="Cloud" class="back-image">
+                        <p class="back-label">→ Cat / Dog</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <div class="task-icon"><i class="fas fa-lightbulb"></i></div>
+                        <div class="task-number">2</div>
+                        <h3 class="task-label">Convince</h3>
+                    </div>
+                    <div class="flip-card-back">
+                        <img src="../1_original.jpg" alt="Enhanced" class="back-image">
+                        <p class="back-label">→ "I see it!"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

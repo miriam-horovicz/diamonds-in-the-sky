@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diamonds In The Sky - Title</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .title-slide {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px;
+        }
+
+        .diamond-decoration {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% {
+                color: #ffd700;
+                text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+                transform: scale(1);
+            }
+            50% {
+                color: #fff8dc;
+                text-shadow: 0 0 40px rgba(255, 215, 0, 1), 0 0 60px rgba(255, 215, 0, 0.5);
+                transform: scale(1.1);
+            }
+        }
+
+        .main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 5rem;
+            font-weight: 700;
+            color: white;
+            text-shadow:
+                0 4px 30px rgba(0, 0, 0, 0.4),
+                0 0 80px rgba(255, 255, 255, 0.2);
+            margin-bottom: 0.5rem;
+            line-height: 1.1;
+        }
+
+        .subtitle {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 400;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+            margin-bottom: 3rem;
+        }
+
+        .thesis-type {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 2rem;
+        }
+
+        .author-section {
+            margin-top: 2rem;
+        }
+
+        .author-name {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .supervisors {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.75);
+            line-height: 1.8;
+        }
+
+        .university-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            margin-top: 2.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            color: white;
+        }
+
+        .university-badge i {
+            font-size: 1.3rem;
+            color: #ffd700;
+        }
+
+        .date {
+            position: absolute;
+            bottom: 40px;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Cloud animation specific to title */
+        .title-cloud {
+            position: absolute;
+            opacity: 0.4;
+        }
+
+        .title-cloud-1 {
+            top: 8%;
+            right: 10%;
+            font-size: 8rem;
+            color: rgba(255, 255, 255, 0.3);
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .title-cloud-2 {
+            bottom: 15%;
+            left: 8%;
+            font-size: 6rem;
+            color: rgba(255, 255, 255, 0.25);
+            animation: float 10s ease-in-out infinite;
+            animation-delay: -3s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sky Background -->
+    <div class="sky-background"></div>
+
+    <!-- Floating Clouds -->
+    <div class="clouds-container">
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+        <div class="cloud cloud-3"></div>
+        <div class="cloud cloud-4"></div>
+    </div>
+
+    <!-- Decorative clouds -->
+    <i class="fas fa-cloud title-cloud title-cloud-1"></i>
+    <i class="fas fa-cloud title-cloud title-cloud-2"></i>
+
+    <!-- Main Content -->
+    <div class="title-slide">
+        <div class="diamond-decoration">
+            <i class="fas fa-gem"></i>
+        </div>
+
+        <h1 class="main-title">Diamonds In The Sky</h1>
+        <p class="subtitle">Pareidolic Animals in Clouds</p>
+
+        <p class="thesis-type">M.Sc. Dissertation</p>
+
+        <div class="author-section">
+            <p class="author-name">Miriam Horovicz</p>
+            <p class="supervisors">
+                Supervised by<br>
+                Prof. Yael Moses & Prof. Yacov Hel-Or
+            </p>
+        </div>
+
+        <div class="university-badge">
+            <i class="fas fa-university"></i>
+            Reichman University - Efi Arazi School of Computer Science
+        </div>
+
+        <p class="date">November 2025</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Study - Design</title>
+    <link rel="stylesheet" href="../styles-v2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .study-slide {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 40px 60px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .slide-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 15px rgba(255,255,255,0.6);
+            text-align: center;
+        }
+
+        .slide-subtitle {
+            font-size: 1.8rem;
+            color: var(--text-dark);
+            margin-bottom: 2.5rem;
+        }
+
+        .content-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2.5rem;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        /* Stats row */
+        .stats-row {
+            display: flex;
+            gap: 2.5rem;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .stats-row.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stat-circle {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            transition: all 0.3s ease;
+        }
+
+        .stat-circle:hover {
+            transform: translateY(-5px) scale(1.05);
+        }
+
+        .stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--accent-coral);
+        }
+
+        .stat-label {
+            font-size: 1.75rem;
+            color: var(--text-medium);
+        }
+
+        /* Protocol flow */
+        .protocol-flow {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .protocol-flow.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .protocol-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .step-icon {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            color: var(--accent-coral);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .step-icon:hover {
+            transform: scale(1.1);
+        }
+
+        /* Images row at top */
+        .images-flow {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .flow-image {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+        }
+
+        .flow-image:hover {
+            transform: scale(1.05);
+        }
+
+        .flow-image img {
+            height: 220px;
+            width: auto;
+            display: block;
+        }
+
+        .step-text {
+            font-size: 2rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .step-desc {
+            font-size: 1.9rem;
+            color: var(--text-medium);
+            margin-top: 0.4rem;
+        }
+
+        .flow-arrow {
+            font-size: 2.5rem;
+            color: var(--accent-teal);
+        }
+
+        .survey-image {
+            margin: 1.5rem 0;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+
+        .survey-image img {
+            height: 320px;
+            width: auto;
+            display: block;
+            border-radius: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sky-background"></div>
+
+    <div class="study-slide">
+        <h1 class="slide-title">User Study</h1>
+        <p class="slide-subtitle">Flow</p>
+
+        <!-- Images flow at top -->
+        <div class="images-flow">
+            <div class="flow-image">
+                <img src="../s1.jpeg" alt="Step 1">
+            </div>
+            <i class="fas fa-arrow-right flow-arrow"></i>
+            <div class="flow-image">
+                <img src="../s2.jpeg" alt="Step 2">
+            </div>
+            <i class="fas fa-arrow-right flow-arrow"></i>
+            <div class="flow-image">
+                <img src="../s3.jpeg" alt="Step 3">
+            </div>
+        </div>
+
+        <div class="content-area">
+            <!-- Protocol Flow with icons -->
+            <div class="protocol-flow visible">
+                <div class="protocol-step">
+                    <div class="step-icon"><i class="fas fa-cloud"></i></div>
+                    <div class="step-text">View Cloud</div>
+                    <div class="step-desc">Select animals</div>
+                </div>
+                <i class="fas fa-arrow-right flow-arrow"></i>
+                <div class="protocol-step">
+                    <div class="step-icon"><i class="fas fa-play-circle"></i></div>
+                    <div class="step-text">Watch Video</div>
+                    <div class="step-desc">Enhancement</div>
+                </div>
+                <i class="fas fa-arrow-right flow-arrow"></i>
+                <div class="protocol-step">
+                    <div class="step-icon"><i class="fas fa-redo"></i></div>
+                    <div class="step-text">Re-evaluate</div>
+                    <div class="step-desc">Select again</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

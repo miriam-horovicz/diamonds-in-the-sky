@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Segment Validation</title>
+    <link rel="stylesheet" href="../styles-v2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .validation-slide {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 50px 80px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .slide-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 15px rgba(255,255,255,0.6);
+            text-align: center;
+        }
+
+        .slide-subtitle {
+            font-size: 1.8rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .cards-row {
+            display: flex;
+            gap: 2.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 1100px;
+            perspective: 1000px;
+            margin-top: 60px;
+        }
+
+        .flip-card {
+            width: 340px;
+            height: 340px;
+            perspective: 1000px;
+            cursor: pointer;
+            margin-top: 60px;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            overflow: visible;
+        }
+
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 1.5rem;
+            box-sizing: border-box;
+        }
+
+        .flip-card-front {
+            background: white;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+        }
+
+        .flip-card-front::before {
+            content: '';
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            width: 45%;
+            height: 65%;
+            top: -32%;
+            left: 12%;
+            box-shadow: 40% 10% 0 10% white, 80% 5% 0 5% white;
+        }
+
+        .flip-card-front::after {
+            content: '';
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            width: 35%;
+            height: 50%;
+            top: -22%;
+            right: 15%;
+        }
+
+        .flip-card-back {
+            background: white;
+            transform: rotateY(180deg);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+            padding: 1.5rem;
+            gap: 0.8rem;
+        }
+
+        .flip-card-back::before {
+            content: '';
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            width: 45%;
+            height: 65%;
+            top: -32%;
+            left: 12%;
+            box-shadow: 40% 10% 0 10% white, 80% 5% 0 5% white;
+        }
+
+        .flip-card-back::after {
+            content: '';
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            width: 35%;
+            height: 50%;
+            top: -22%;
+            right: 15%;
+        }
+
+        .step-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 5;
+        }
+
+        .flip-card:nth-child(1) .step-number { color: var(--accent-coral); }
+        .flip-card:nth-child(2) .step-number { color: var(--accent-teal); }
+
+        .flip-card:nth-child(1) .flip-card-front { border-bottom: 4px solid var(--accent-coral); }
+        .flip-card:nth-child(2) .flip-card-front { border-bottom: 4px solid var(--accent-teal); }
+
+        .flip-card:nth-child(1) .flip-card-back { border-bottom: 4px solid var(--accent-coral); }
+        .flip-card:nth-child(2) .flip-card-back { border-bottom: 4px solid var(--accent-teal); }
+
+        .step-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 5;
+        }
+
+        .flip-card:nth-child(1) .step-icon { color: var(--accent-coral); }
+        .flip-card:nth-child(2) .step-icon { color: var(--accent-teal); }
+
+        .example-image {
+            position: relative;
+            z-index: 5;
+            border-radius: 12px;
+            overflow: visible;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+
+        .example-image img {
+            max-height: 180px;
+            max-width: 280px;
+            width: auto;
+            height: auto;
+            display: block;
+            border-radius: 12px;
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            object-fit: contain;
+        }
+
+        .example-image img:hover {
+            transform: scale(1.8);
+            z-index: 100;
+        }
+
+        .step-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: var(--text-dark);
+            font-weight: 600;
+            position: relative;
+            z-index: 5;
+        }
+
+        .back-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            font-weight: 600;
+            position: relative;
+            z-index: 5;
+        }
+
+        /* Formula box */
+        .formula-box {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            padding: 1rem 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 5;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
+
+        .formula-text {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.75rem;
+            color: white;
+            white-space: nowrap;
+        }
+
+        .formula-text .hl-1 { color: #74b9ff; }
+        .formula-text .hl-2 { color: #fab1a0; }
+        .formula-text .hl-3 { color: #81ecec; }
+
+        .step-desc {
+            font-size: 1.75rem;
+            color: var(--text-medium);
+            line-height: 1.5;
+            position: relative;
+            z-index: 5;
+            margin: 0;
+        }
+
+        .flip-card:nth-child(1) .step-desc strong { color: var(--accent-coral); }
+        .flip-card:nth-child(2) .step-desc strong { color: var(--accent-teal); }
+
+        /* Threshold badge */
+        .threshold-badge {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.75rem;
+            color: var(--text-medium);
+            margin-top: 0.3rem;
+            position: relative;
+            z-index: 5;
+        }
+    </style>
+</head>
+<body>
+    <div class="sky-background"></div>
+
+    <div class="validation-slide">
+        <h1 class="slide-title">Validation</h1>
+        <p class="slide-subtitle">Two criteria to ensure quality results</p>
+
+        <div class="cards-row">
+            <!-- Step 1: Spatial Similarity -->
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <div class="step-icon"><i class="fas fa-vector-square"></i></div>
+                        <div class="step-number">1</div>
+                        <h3 class="step-title">Spatial Similarity</h3>
+                        <div class="threshold-badge">IoU ≥ 0.5</div>
+                    </div>
+                    <div class="flip-card-back">
+                        <h4 class="back-title">Geometric similar?</h4>
+                        <div class="example-image">
+                            <img src="../i.jpeg" alt="IoU example">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Photometric Similarity -->
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <div class="step-icon"><i class="fas fa-palette"></i></div>
+                        <div class="step-number">2</div>
+                        <h3 class="step-title">Photometric Similarity</h3>
+                        <div class="threshold-badge">SSIM ≥ 0.7</div>
+                    </div>
+                    <div class="flip-card-back">
+                        <h4 class="back-title">Photometric similar?</h4>
+                        <div class="example-image">
+                            <img src="../s.jpeg" alt="SSIM example">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dataset</title>
+    <link rel="stylesheet" href="../styles-v2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .dataset-slide {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 60px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .slide-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 2.5rem;
+            text-shadow: 0 2px 15px rgba(255,255,255,0.6);
+            text-align: center;
+        }
+
+        /* Pipeline visualization */
+        .pipeline-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.2rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .pipeline-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0.3;
+            transform: scale(0.9);
+            transition: all 0.5s ease;
+            cursor: pointer;
+        }
+
+        .pipeline-step.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .pipeline-step.active {
+            transform: scale(1.1);
+        }
+
+        .pipeline-step:hover {
+            transform: scale(1.05);
+        }
+
+        .step-circle {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+        }
+
+        .pipeline-step.active .step-circle {
+            border-color: var(--accent-coral);
+            box-shadow: 0 8px 40px rgba(231,111,81,0.3);
+        }
+
+        .step-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--accent-coral);
+            line-height: 1;
+        }
+
+        .step-label {
+            font-size: 1.75rem;
+            color: var(--text-medium);
+            margin-top: 0.3rem;
+            text-align: center;
+        }
+
+        .step-title {
+            font-size: 1.75rem;
+            color: var(--text-dark);
+            margin-top: 0.6rem;
+            font-weight: 600;
+        }
+
+        /* Multiplier badges */
+        .multiplier {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+
+        .multiplier.visible {
+            opacity: 1;
+        }
+
+        .mult-badge {
+            background: var(--accent-teal);
+            color: white;
+            padding: 0.5rem 0.9rem;
+            border-radius: 20px;
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+
+        .mult-arrow {
+            color: var(--accent-coral);
+            font-size: 1.6rem;
+        }
+
+        /* Info cards row */
+        .info-row {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: auto;
+            padding-bottom: 2rem;
+        }
+
+        .info-card {
+            padding: 2rem 3rem;
+            border-radius: 30px;
+            text-align: center;
+            min-width: 280px;
+            background: rgba(255,255,255,0.9);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px) scale(1.02);
+        }
+
+        .info-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .info-title i {
+            color: var(--accent-coral);
+        }
+
+        /* Source badges */
+        .source-list {
+            display: flex;
+            flex-direction: row;
+            gap: 2rem;
+        }
+
+        .source-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 1.4rem;
+            color: var(--text-medium);
+        }
+
+        .source-item i {
+            color: var(--accent-teal);
+            width: 20px;
+        }
+
+        /* Animals grid */
+        .animals-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.4rem 0.8rem;
+            text-align: left;
+        }
+
+        .animal-item {
+            font-size: 1.75rem;
+            color: var(--text-medium);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .animal-item i {
+            color: var(--accent-teal);
+            font-size: 1.75rem;
+        }
+
+        /* Controls */
+        .controls {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .control-btn {
+            background: white;
+            border: 1px solid var(--accent-coral);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 1.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            transition: all 0.3s ease;
+            color: var(--accent-coral);
+            font-weight: 600;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+            background: var(--accent-coral);
+            color: white;
+        }
+
+        .control-btn.primary {
+            background: var(--accent-coral);
+            color: white;
+        }
+
+        .control-btn.primary:hover {
+            background: #d35f47;
+        }
+
+        .control-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Progress indicator */
+        .progress-dots {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .progress-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ddd;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .progress-dot:hover {
+            transform: scale(1.2);
+        }
+
+        .progress-dot.active {
+            background: var(--accent-coral);
+            transform: scale(1.3);
+        }
+
+        .progress-dot.completed {
+            background: var(--accent-teal);
+        }
+    </style>
+</head>
+<body>
+    <div class="sky-background"></div>
+
+    <div class="dataset-slide">
+        <h1 class="slide-title">Dataset</h1>
+
+        <!-- Pipeline visualization -->
+        <div class="pipeline-visual">
+            <div class="pipeline-step" id="step-1" onclick="goToStep(1)">
+                <div class="step-circle">
+                    <div class="step-number">50</div>
+                    <div class="step-label">images</div>
+                </div>
+                <div class="step-title">Sky Images</div>
+            </div>
+
+            <div class="multiplier" id="mult-1">
+                <span class="mult-badge">× 5</span>
+                <i class="fas fa-arrow-right mult-arrow"></i>
+            </div>
+
+            <div class="pipeline-step" id="step-2" onclick="goToStep(2)">
+                <div class="step-circle">
+                    <div class="step-number">250</div>
+                    <div class="step-label">segments</div>
+                </div>
+                <div class="step-title">Cloud Segments</div>
+            </div>
+
+            <div class="multiplier" id="mult-2">
+                <span class="mult-badge">× 9</span>
+                <i class="fas fa-arrow-right mult-arrow"></i>
+            </div>
+
+            <div class="pipeline-step" id="step-3" onclick="goToStep(3)">
+                <div class="step-circle">
+                    <div class="step-number">2,250</div>
+                    <div class="step-label">generated</div>
+                </div>
+                <div class="step-title">Diffused Images</div>
+            </div>
+
+            <div class="multiplier" id="mult-3">
+                <i class="fas fa-arrow-right mult-arrow"></i>
+            </div>
+
+            <div class="pipeline-step" id="step-4" onclick="goToStep(4)">
+                <div class="step-circle">
+                    <div class="step-number">60</div>
+                    <div class="step-label">passed</div>
+                </div>
+                <div class="step-title">Validated</div>
+            </div>
+        </div>
+
+        <!-- Progress dots -->
+        <div class="progress-dots">
+            <div class="progress-dot" id="dot-1" onclick="goToStep(1)"></div>
+            <div class="progress-dot" id="dot-2" onclick="goToStep(2)"></div>
+            <div class="progress-dot" id="dot-3" onclick="goToStep(3)"></div>
+            <div class="progress-dot" id="dot-4" onclick="goToStep(4)"></div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <button class="control-btn" id="reset-btn" onclick="resetSteps()">
+                <i class="fas fa-redo"></i> Reset
+            </button>
+            <button class="control-btn primary" id="next-btn" onclick="nextStep()">
+                Next <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+
+        <!-- Info cards at bottom -->
+        <div class="info-row">
+            <div class="info-card" id="card-sources">
+                <div class="info-title"><i class="fas fa-database"></i> Data Sources</div>
+                <div class="source-list">
+                    <div class="source-item"><i class="fab fa-google"></i> Google Photos</div>
+                    <div class="source-item"><i class="fas fa-images"></i> Getty Images</div>
+                    <div class="source-item"><i class="fas fa-camera"></i> Original Photos</div>
+                </div>
+            </div>
+
+                    </div>
+    </div>
+
+    <script>
+        let currentStep = 0;
+        const totalSteps = 4;
+
+        function updateView() {
+            // Update pipeline steps
+            for (let i = 1; i <= totalSteps; i++) {
+                const step = document.getElementById(`step-${i}`);
+                const dot = document.getElementById(`dot-${i}`);
+
+                step.classList.remove('visible', 'active');
+                dot.classList.remove('active', 'completed');
+
+                if (i <= currentStep) {
+                    step.classList.add('visible');
+                    if (i === currentStep) {
+                        step.classList.add('active');
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.add('completed');
+                    }
+                }
+            }
+
+            // Update multipliers
+            for (let i = 1; i <= 3; i++) {
+                const mult = document.getElementById(`mult-${i}`);
+                mult.classList.toggle('visible', i < currentStep);
+            }
+
+
+            // Update button state
+            document.getElementById('next-btn').disabled = currentStep >= totalSteps;
+        }
+
+        function nextStep() {
+            if (currentStep < totalSteps) {
+                currentStep++;
+                updateView();
+            }
+        }
+
+        function resetSteps() {
+            currentStep = 0;
+            updateView();
+        }
+
+        function goToStep(step) {
+            currentStep = step;
+            updateView();
+        }
+
+        // Initialize
+        updateView();
+    </script>
+</body>
+</html>

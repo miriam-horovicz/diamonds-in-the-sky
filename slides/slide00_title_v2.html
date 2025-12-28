@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diamonds In The Sky - Title</title>
+    <link rel="stylesheet" href="../styles-v2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .title-slide {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            padding: 30px 60px 50px;
+        }
+
+        /* Main cloud - simple style like slide 2 */
+        .main-cloud {
+            padding: 3.5rem 7rem;
+            border-radius: 150px;
+            margin-bottom: 0;
+            max-width: 950px;
+            text-align: center;
+        }
+
+        .main-cloud::before {
+            width: 45%;
+            height: 75%;
+            top: -40%;
+            left: 12%;
+        }
+
+        .main-cloud::after {
+            width: 35%;
+            height: 60%;
+            top: -30%;
+            right: 18%;
+        }
+
+        .diamond-image {
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .diamond-image img {
+            height: 140px;
+            width: auto;
+        }
+
+        .main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 5.5rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 0.75rem;
+            line-height: 1.1;
+            position: relative;
+            z-index: 10;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            font-style: italic;
+            color: var(--text-medium);
+            margin-bottom: 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .info-clouds {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .info-clouds.supervisors {
+            margin-top: 0.8rem;
+        }
+
+        .info-cloud.author {
+            margin-top: 0;
+        }
+
+        .bottom-row {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .names-column {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        /* Small fluffy info clouds */
+        .info-cloud {
+            position: relative;
+            background: #fff;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            min-width: 180px;
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.04),
+                inset 0 -4px 15px rgba(0, 0, 0, 0.01);
+            transition: all 0.3s ease;
+        }
+
+        .info-cloud::before {
+            content: '';
+            position: absolute;
+            width: 35px;
+            height: 35px;
+            background: #fff;
+            border-radius: 50%;
+            top: -18px;
+            left: 25px;
+            box-shadow:
+                30px 3px 0 10px #fff,
+                65px 0 0 6px #fff;
+        }
+
+        .info-cloud::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background: #fff;
+            border-radius: 50%;
+            top: -10px;
+            right: 30px;
+            box-shadow:
+                -20px -3px 0 8px #fff;
+        }
+
+        .info-cloud:hover {
+            transform: translateY(-8px);
+            box-shadow:
+                0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-cloud p {
+            font-size: 1.75rem;
+            color: var(--text-medium);
+            margin: 0;
+            position: relative;
+            z-index: 5;
+        }
+
+        .info-cloud strong {
+            color: var(--text-dark);
+            display: block;
+            font-size: 1.75rem;
+            margin-bottom: 0.15rem;
+            position: relative;
+            z-index: 5;
+        }
+
+        /* University cloud */
+        .university-cloud {
+            position: relative;
+            background: #fff;
+            padding: 1rem 1.5rem;
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.04);
+        }
+
+        .university-cloud::before {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background: #fff;
+            border-radius: 50%;
+            top: -10px;
+            left: 40px;
+            box-shadow:
+                40px 2px 0 10px #fff,
+                100px -2px 0 6px #fff;
+        }
+
+        .university-cloud::after {
+            display: none;
+        }
+
+        .university-logo {
+            height: 60px;
+            width: auto;
+            position: relative;
+            z-index: 5;
+        }
+    </style>
+</head>
+<body>
+    <div class="sky-background"></div>
+
+    <div class="title-slide">
+        <div class="main-cloud">
+            <div class="diamond-image">
+                <img src="../diamond.png" alt="Diamond">
+            </div>
+            <h1 class="main-title">Diamonds In The Sky</h1>
+            <p class="subtitle">Pareidolic Animals in Clouds</p>
+        </div>
+
+        <div class="bottom-row">
+            <div class="university-cloud">
+                <img src="../logo.png" alt="Reichman University" class="university-logo">
+            </div>
+
+            <div class="names-column">
+                <div class="info-clouds">
+                    <div class="info-cloud author">
+                        <strong>Miriam Horovicz</strong>
+                        <p>M.Sc. Computer Science</p>
+                    </div>
+                </div>
+
+                <div class="info-clouds supervisors">
+                    <div class="info-cloud">
+                        <strong>Prof. Yael Moses</strong>
+                        <p>Supervisor</p>
+                    </div>
+                    <div class="info-cloud">
+                        <strong>Prof. Yacov Hel-Or</strong>
+                        <p>Supervisor</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

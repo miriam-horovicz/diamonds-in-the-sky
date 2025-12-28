@@ -1,0 +1,428 @@
+/* Sky Theme - Pareidolic Animals in Clouds */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
+
+:root {
+    --sky-light: #87CEEB;
+    --sky-mid: #5BA3D9;
+    --sky-deep: #2E78B7;
+    --sky-dark: #1a4a6e;
+    --cloud-white: #ffffff;
+    --cloud-soft: #f0f8ff;
+    --sunset-orange: #ff7e5f;
+    --sunset-pink: #feb47b;
+    --sunset-purple: #7b68ee;
+    --text-dark: #1a3a52;
+    --text-light: rgba(255, 255, 255, 0.95);
+    --accent-gold: #ffd700;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(180deg, #1a4a6e 0%, #2E78B7 30%, #5BA3D9 60%, #87CEEB 100%);
+    min-height: 100vh;
+    overflow: hidden;
+    color: var(--text-light);
+}
+
+/* Animated Sky Background */
+.sky-background {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(180deg,
+        #0f2647 0%,
+        #1a4a6e 15%,
+        #2E78B7 35%,
+        #5BA3D9 55%,
+        #87CEEB 75%,
+        #b4d7e8 90%,
+        #e8f4f8 100%
+    );
+    z-index: 0;
+}
+
+/* Floating Clouds */
+.clouds-container {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.cloud {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.9;
+    filter: blur(1px);
+    animation: float-cloud linear infinite;
+}
+
+.cloud::before,
+.cloud::after {
+    content: '';
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+}
+
+.cloud-1 {
+    width: 200px;
+    height: 60px;
+    top: 10%;
+    left: -200px;
+    animation-duration: 45s;
+}
+.cloud-1::before {
+    width: 100px;
+    height: 80px;
+    top: -40px;
+    left: 20px;
+}
+.cloud-1::after {
+    width: 120px;
+    height: 70px;
+    top: -30px;
+    right: 20px;
+}
+
+.cloud-2 {
+    width: 150px;
+    height: 50px;
+    top: 25%;
+    left: -150px;
+    animation-duration: 55s;
+    animation-delay: -20s;
+    opacity: 0.7;
+}
+.cloud-2::before {
+    width: 80px;
+    height: 60px;
+    top: -35px;
+    left: 15px;
+}
+.cloud-2::after {
+    width: 90px;
+    height: 55px;
+    top: -25px;
+    right: 15px;
+}
+
+.cloud-3 {
+    width: 180px;
+    height: 55px;
+    top: 40%;
+    left: -180px;
+    animation-duration: 50s;
+    animation-delay: -10s;
+    opacity: 0.8;
+}
+.cloud-3::before {
+    width: 90px;
+    height: 70px;
+    top: -40px;
+    left: 25px;
+}
+.cloud-3::after {
+    width: 100px;
+    height: 60px;
+    top: -30px;
+    right: 25px;
+}
+
+.cloud-4 {
+    width: 120px;
+    height: 40px;
+    top: 60%;
+    left: -120px;
+    animation-duration: 60s;
+    animation-delay: -30s;
+    opacity: 0.6;
+}
+.cloud-4::before {
+    width: 60px;
+    height: 50px;
+    top: -30px;
+    left: 10px;
+}
+.cloud-4::after {
+    width: 70px;
+    height: 45px;
+    top: -20px;
+    right: 10px;
+}
+
+@keyframes float-cloud {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(calc(100vw + 300px));
+    }
+}
+
+/* Slide Container */
+.slide {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 80px;
+    z-index: 10;
+}
+
+.slide-content {
+    max-width: 1200px;
+    width: 100%;
+    position: relative;
+    z-index: 10;
+}
+
+/* Typography */
+.hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 5.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 1rem;
+    color: var(--cloud-white);
+    text-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.3),
+        0 0 60px rgba(255, 255, 255, 0.3);
+    line-height: 1.1;
+}
+
+.hero-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    text-align: center;
+    font-weight: 400;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 2rem;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 600;
+    color: var(--cloud-white);
+    margin-bottom: 2rem;
+    text-shadow: 0 3px 15px rgba(0, 0, 0, 0.3);
+}
+
+.section-subtitle {
+    font-size: 1.4rem;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 2rem;
+    font-weight: 300;
+}
+
+/* Cards */
+.card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+/* Glass Panel */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 24px;
+    padding: 2.5rem;
+}
+
+/* University Badge */
+.university-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--cloud-white);
+    margin-top: 2rem;
+}
+
+/* Author Info */
+.author-info {
+    text-align: center;
+    margin-top: 3rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.author-name {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.supervisors {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+/* Image containers */
+.image-showcase {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.image-frame {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 16px;
+    padding: 1rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.image-frame img {
+    border-radius: 12px;
+    max-width: 100%;
+    height: auto;
+}
+
+/* Lists */
+.feature-list {
+    list-style: none;
+    padding: 0;
+}
+
+.feature-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.feature-list li i {
+    color: var(--accent-gold);
+    font-size: 1.2rem;
+    margin-top: 0.2rem;
+}
+
+/* Highlight box */
+.highlight-box {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 126, 95, 0.2));
+    border-left: 4px solid var(--accent-gold);
+    padding: 1.5rem 2rem;
+    border-radius: 0 16px 16px 0;
+    margin: 1.5rem 0;
+}
+
+/* Stats */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+}
+
+.stat-number {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--accent-gold);
+    text-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+}
+
+.stat-label {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-top: 0.5rem;
+}
+
+/* Two column layout */
+.two-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+[data-animate="fadeInUp"] {
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+/* Diamond decoration */
+.diamond-icon {
+    font-size: 2rem;
+    color: var(--accent-gold);
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    margin: 0 0.5rem;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .hero-title {
+        font-size: 4rem;
+    }
+    .two-columns {
+        grid-template-columns: 1fr;
+    }
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 3rem;
+    }
+    .slide {
+        padding: 40px;
+    }
+}

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You</title>
+    <link rel="stylesheet" href="../styles-v2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .thanks-slide {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 50px 80px;
+            text-align: center;
+        }
+
+        .main-cloud {
+            padding: 4rem 6rem;
+            border-radius: 150px;
+            margin-bottom: 2.5rem;
+            max-width: 700px;
+        }
+
+        .main-cloud::before {
+            width: 50%;
+            height: 80%;
+            top: -45%;
+            left: 10%;
+        }
+
+        .main-cloud::after {
+            width: 40%;
+            height: 65%;
+            top: -35%;
+            right: 15%;
+        }
+
+        .thanks-icon {
+            margin-bottom: 1.5rem;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        .thanks-icon img {
+            height: 80px;
+            width: auto;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .thanks-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .thanks-subtitle {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            font-style: italic;
+            color: var(--text-medium);
+        }
+
+        /* QA cloud */
+        .qa-cloud {
+            padding: 2rem 4rem;
+            border-radius: 100px;
+            border-bottom: 4px solid var(--accent-coral);
+        }
+
+        .qa-cloud::before,
+        .qa-cloud::after {
+            display: none;
+        }
+
+        .qa-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .qa-subtitle {
+            font-size: 1.75rem;
+            color: var(--accent-coral);
+        }
+    </style>
+</head>
+<body>
+    <div class="sky-background"></div>
+
+    <div class="thanks-slide">
+        <div class="cloud-container main-cloud">
+            <div class="thanks-icon">
+                <img src="../diamond.png" alt="Diamond">
+            </div>
+            <h1 class="thanks-title">Thank You!</h1>
+            <p class="thanks-subtitle">Diamonds In The Sky</p>
+        </div>
+
+
+        <div class="cloud-container qa-cloud">
+            <h2 class="qa-title">Questions?</h2>
+            <p class="qa-subtitle">Let's discuss!</p>
+        </div>
+    </div>
+</body>
+</html>

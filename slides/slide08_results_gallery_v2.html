@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results Gallery</title>
+    <link rel="stylesheet" href="../styles-v2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .gallery-slide {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 40px 50px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .slide-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 0 0 0.3rem 0;
+            text-shadow: 0 2px 15px rgba(255,255,255,0.6);
+            text-align: center;
+        }
+
+        .slide-subtitle {
+            font-size: 1.6rem;
+            color: var(--text-dark);
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Main thumbnail grid */
+        .thumbnail-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.2rem;
+            padding: 1rem 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .thumb-card {
+            background: rgba(255,255,255,0.9);
+            border-radius: 16px;
+            padding: 0.8rem;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .thumb-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.18);
+        }
+
+        .thumb-card img {
+            width: 100%;
+            height: 120px;
+            object-fit: contain;
+            border-radius: 10px;
+        }
+
+        .thumb-label {
+            margin-top: 0.5rem;
+            font-size: 1.75rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .thumb-hint {
+            font-size: 1.75rem;
+            color: var(--accent-coral);
+            margin-top: 0.2rem;
+        }
+
+        /* Expanded modal overlay */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: rgba(255,255,255,0.95);
+            border-radius: 24px;
+            padding: 2rem;
+            max-width: 900px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: var(--accent-coral);
+            color: white;
+            font-size: 1.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            transform: scale(1.1);
+            background: #d35f47;
+        }
+
+        .modal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .modal-layout {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+
+        .modal-original {
+            flex-shrink: 0;
+        }
+
+        .modal-original img {
+            height: 250px;
+            width: auto;
+            border-radius: 16px;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+        }
+
+        .modal-original-label {
+            text-align: center;
+            margin-top: 0.5rem;
+            font-size: 1.75rem;
+            color: var(--text-medium);
+        }
+
+        .modal-arrow {
+            font-size: 2rem;
+            color: var(--accent-coral);
+            align-self: center;
+        }
+
+        .modal-results {
+            flex: 1;
+        }
+
+        .modal-results-label {
+            font-size: 1.75rem;
+            color: var(--text-dark);
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            text-align: center;
+        }
+
+        .modal-results-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .result-card {
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            width: 150px;
+            height: 160px;
+        }
+
+        .result-card:hover {
+            transform: scale(1.05);
+        }
+
+        .result-card img {
+            width: 150px;
+            height: 130px;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+            transition: all 0.2s ease;
+        }
+
+        .result-card.playing img {
+            width: 350px;
+            height: 300px;
+            object-fit: contain;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+
+        .result-card:hover img {
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+        }
+
+        .result-card .animal-name {
+            margin-top: 0.4rem;
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            text-transform: capitalize;
+        }
+
+        .result-card.has-video::after {
+            content: '\f04b';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 1.75rem;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            opacity: 0.8;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .result-card.has-video:hover::after {
+            opacity: 1;
+        }
+
+        .result-card.playing::after {
+            display: none;
+        }
+
+        .video-close-hint {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 1.75rem;
+            opacity: 0.7;
+        }
+
+        /* Video overlay */
+        .video-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            cursor: pointer;
+        }
+
+        .video-overlay.active {
+            display: flex;
+        }
+
+        .video-overlay img {
+            max-height: 80vh;
+            max-width: 90vw;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .video-overlay-close {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--accent-coral);
+            color: white;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Instruction */
+        .click-instruction {
+            text-align: center;
+            font-size: 1.75rem;
+            color: var(--text-medium);
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="sky-background"></div>
+
+    <div class="gallery-slide">
+        <h1 class="slide-title">Results Gallery</h1>
+        <p class="slide-subtitle">Pareidolic animals discovered in clouds</p>
+
+        <div class="thumbnail-grid">
+            <div class="thumb-card" data-family="1">
+                <img src="../result_1_original.png" alt="Cloud 1">
+            </div>
+            <div class="thumb-card" data-family="2">
+                <img src="../result_2_original.png" alt="Cloud 2">
+            </div>
+            <div class="thumb-card" data-family="3">
+                <img src="../result_3_original.png" alt="Cloud 3">
+            </div>
+            <div class="thumb-card" data-family="4">
+                <img src="../result_4_original.png" alt="Cloud 4">
+            </div>
+            <div class="thumb-card" data-family="5">
+                <img src="../result_5_original.png" alt="Cloud 5">
+            </div>
+            <div class="thumb-card" data-family="6">
+                <img src="../result_6_original.png" alt="Cloud 6">
+            </div>
+            <div class="thumb-card" data-family="8">
+                <img src="../result_8_original.png" alt="Cloud 8">
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for expanded family view -->
+    <div class="modal-overlay" id="modal">
+        <div class="modal-content">
+            <button class="close-btn" id="close-modal"><i class="fas fa-times"></i></button>
+            <div class="modal-layout">
+                <div class="modal-original">
+                    <img id="modal-original-img" src="" alt="Original">
+                </div>
+                <div class="modal-arrow"><i class="fas fa-arrow-right"></i></div>
+                <div class="modal-results">
+                    <div class="modal-results-grid" id="modal-results-grid">
+                        <!-- Results will be injected here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Overlay -->
+    <div class="video-overlay" id="video-overlay" onclick="closeVideoOverlay()">
+        <button class="video-overlay-close"><i class="fas fa-times"></i></button>
+        <img id="video-overlay-img" src="" alt="Video">
+    </div>
+
+    <script>
+        // Video overlay functions
+        function openVideoOverlay(videoSrc) {
+            document.getElementById('video-overlay-img').src = videoSrc;
+            document.getElementById('video-overlay').classList.add('active');
+        }
+
+        function closeVideoOverlay() {
+            document.getElementById('video-overlay').classList.remove('active');
+            document.getElementById('video-overlay-img').src = '';
+        }
+
+        // Family data
+        const families = {
+            1: {
+                original: '../result_1_original.png',
+                results: [
+                    { name: 'bear', img: '../result_1_bear.png', video: null },
+                    { name: 'cow', img: '../result_1_cow.png', video: null },
+                    { name: 'dog', img: '../result_1_dog.png', video: null },
+                    { name: 'sheep', img: '../result_1_sheep.png', video: null }
+                ]
+            },
+            2: {
+                original: '../result_2_original.png',
+                results: [
+                    { name: 'cat', img: '../result_2_cat.png', video: null },
+                    { name: 'dog', img: '../result_2_dog.png', video: null },
+                    { name: 'sheep', img: '../result_2_sheep.png', video: null }
+                ]
+            },
+            3: {
+                original: '../result_3_original.png',
+                results: [
+                    { name: 'bear', img: '../result_3_bear.png', video: null },
+                    { name: 'cat', img: '../result_3_cat.png', video: null }
+                ]
+            },
+            4: {
+                original: '../result_4_original.png',
+                results: [
+                    { name: 'horse', img: '../result_4_horse.png', video: '../3_video.gif' }
+                ]
+            },
+            5: {
+                original: '../result_5_original.png',
+                results: [
+                    { name: 'cat', img: '../result_5_cat.png', video: null },
+                    { name: 'sheep', img: '../result_5_sheep.png', video: null }
+                ]
+            },
+            6: {
+                original: '../result_6_original.png',
+                results: [
+                    { name: 'elephant', img: '../result_6_elephant.png', video: null }
+                ]
+            },
+            7: {
+                original: '../result_7_original.png',
+                results: [
+                    { name: 'cat', img: '../result_7_cat.png', video: null },
+                    { name: 'giraffe', img: '../result_7_giraffe.png', video: null }
+                ]
+            },
+            8: {
+                original: '../result_8_original.png',
+                results: [
+                    { name: 'dog', img: '../result_8_dog.png', video: null },
+                    { name: 'elephant', img: '../result_8_elephant.png', video: null },
+                    { name: 'horse', img: '../result_8_horse.png', video: null }
+                ]
+            }
+        };
+
+        const modal = document.getElementById('modal');
+        const modalOriginalImg = document.getElementById('modal-original-img');
+        const modalResultsGrid = document.getElementById('modal-results-grid');
+        const closeModal = document.getElementById('close-modal');
+
+        // Open family modal
+        document.querySelectorAll('.thumb-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const familyId = card.dataset.family;
+                const family = families[familyId];
+
+                modalOriginalImg.src = family.original;
+
+                // Build results grid
+                modalResultsGrid.innerHTML = '';
+                family.results.forEach(result => {
+                    const div = document.createElement('div');
+                    div.className = 'result-card' + (result.video ? ' has-video' : '');
+                    const originalImg = result.img;
+                    div.innerHTML = `
+                        <img src="${result.img}" alt="${result.name}">
+                        <div class="animal-name">${result.name}</div>
+                    `;
+
+                    if (result.video) {
+                        div.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            openVideoOverlay(result.video);
+                        });
+                    }
+                    modalResultsGrid.appendChild(div);
+                });
+
+                modal.classList.add('active');
+            });
+        });
+
+        // Close modal
+        closeModal.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+
+        // Escape key to close
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                modal.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>

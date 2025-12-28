@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Study - Results</title>
+    <link rel="stylesheet" href="../styles-v2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .study-slide {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 60px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .slide-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 0.3rem;
+            text-shadow: 0 2px 15px rgba(255,255,255,0.6);
+        }
+
+        .slide-subtitle {
+            font-size: 1.8rem;
+            color: var(--text-dark);
+            margin-bottom: 2rem;
+        }
+
+        /* Control buttons */
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .control-btn {
+            padding: 0.8rem 1.8rem;
+            border-radius: 30px;
+            font-size: 1.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .control-btn.data {
+            background: var(--accent-gold);
+            color: white;
+        }
+        .control-btn.data:hover, .control-btn.data.active {
+            background: #d4a017;
+            transform: scale(1.05);
+        }
+
+        .control-btn.matrices {
+            background: #74b9ff;
+            color: white;
+        }
+        .control-btn.matrices:hover, .control-btn.matrices.active {
+            background: #0984e3;
+            transform: scale(1.05);
+        }
+
+        .control-btn.metrics {
+            background: var(--accent-coral);
+            color: white;
+        }
+        .control-btn.metrics:hover, .control-btn.metrics.active {
+            background: #d63031;
+            transform: scale(1.05);
+        }
+
+        .control-btn.finding {
+            background: var(--accent-teal);
+            color: white;
+        }
+        .control-btn.finding:hover, .control-btn.finding.active {
+            background: #1a9985;
+            transform: scale(1.05);
+        }
+
+        .control-btn.baselines {
+            background: #9b59b6;
+            color: white;
+        }
+        .control-btn.baselines:hover, .control-btn.baselines.active {
+            background: #8e44ad;
+            transform: scale(1.05);
+        }
+
+        /* Main content area */
+        .content-area {
+            width: 100%;
+            max-width: 1100px;
+            min-height: 400px;
+            position: relative;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Section 0: Data Stats */
+        .data-section {
+            gap: 5rem;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .stat-circle {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.12);
+            transition: all 0.3s ease;
+        }
+
+        .stat-circle:hover {
+            transform: translateY(-8px) scale(1.05);
+        }
+
+        .stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            font-weight: 700;
+            color: var(--accent-coral);
+        }
+
+        .stat-label {
+            font-size: 1.8rem;
+            color: var(--text-medium);
+            margin-top: 0.5rem;
+        }
+
+        /* Section 1: Confusion Matrices side by side */
+        .matrices-section {
+            flex-direction: column;
+            gap: 1.5rem;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .matrices-row {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Illustration for single animal/segment */
+        .illustration-row {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            background: rgba(255,255,255,0.9);
+            padding: 1rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            margin-bottom: 0.5rem;
+        }
+
+        .illustration-label {
+            font-size: 1.4rem;
+            color: var(--text-medium);
+            font-style: italic;
+        }
+
+        .illustration-example {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .mini-cloud-img {
+            width: 60px;
+            height: 45px;
+            border-radius: 8px;
+            object-fit: cover;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+        }
+
+        .mini-animal {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent-coral);
+        }
+
+        .mini-matrix {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3px;
+            font-size: 1rem;
+        }
+
+        .mini-cell {
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .mini-cell.yes { background: rgba(42,157,143,0.3); color: var(--accent-teal); }
+        .mini-cell.no { background: rgba(200,200,200,0.4); color: #666; }
+
+        .sum-arrow {
+            font-size: 1.5rem;
+            color: var(--accent-teal);
+        }
+
+        .sum-label {
+            font-size: 1.3rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .matrix-card {
+            background: rgba(255,255,255,0.98);
+            padding: 1.5rem 2rem;
+            border-radius: 25px;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .matrix-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+        }
+
+        .matrix-card.before {
+            border-top: 5px solid #74b9ff;
+        }
+
+        .matrix-card.after {
+            border-top: 5px solid var(--accent-teal);
+        }
+
+        .matrix-label {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .matrix-card.before .matrix-label { color: #0984e3; }
+        .matrix-card.after .matrix-label { color: var(--accent-teal); }
+
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: auto 1fr 1fr;
+            gap: 8px;
+        }
+
+        .matrix-cell {
+            padding: 0.5rem;
+            text-align: center;
+            border-radius: 8px;
+            font-size: 1.4rem;
+        }
+
+        .matrix-header {
+            font-weight: 700;
+            color: var(--text-dark);
+            font-size: 1.4rem;
+        }
+
+        .matrix-row-label {
+            font-weight: 600;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            font-size: 1.4rem;
+        }
+
+        .matrix-value {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 2rem;
+            padding: 0.8rem;
+        }
+
+        .matrix-value.tp { background: rgba(42,157,143,0.3); color: var(--accent-teal); }
+        .matrix-value.fp { background: rgba(231,111,81,0.25); color: var(--accent-coral); }
+        .matrix-value.fn { background: rgba(231,111,81,0.25); color: var(--accent-coral); }
+        .matrix-value.tn { background: rgba(200,200,200,0.35); color: #666; }
+
+        /* Arrow between matrices */
+        .matrix-arrow {
+            font-size: 2.5rem;
+            color: var(--accent-teal);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+
+        /* Section 2: Big Metrics */
+        .metrics-section {
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            width: 100%;
+        }
+
+        .metrics-row {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .metric-card {
+            background: rgba(255,255,255,0.98);
+            padding: 2rem 3rem;
+            border-radius: 30px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+            text-align: center;
+            transition: all 0.3s ease;
+            min-width: 200px;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-10px) scale(1.02);
+        }
+
+        .metric-name {
+            font-size: 1.75rem;
+            color: var(--text-medium);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-improvement {
+            font-family: 'Playfair Display', serif;
+            font-size: 5rem;
+            font-weight: 700;
+            color: var(--accent-teal);
+            line-height: 1;
+        }
+
+        .metric-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            font-size: 1.75rem;
+        }
+
+        .metric-before {
+            color: #74b9ff;
+            font-weight: 700;
+        }
+
+        .metric-after {
+            color: var(--accent-teal);
+            font-weight: 700;
+        }
+
+        .metric-arrow i {
+            color: var(--accent-coral);
+            font-size: 1.75rem;
+        }
+
+        /* Comparison table below */
+        .comparison-note {
+            background: rgba(255,255,255,0.9);
+            padding: 1.5rem 3rem;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            font-size: 1.75rem;
+        }
+
+        .comparison-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .comparison-item .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .comparison-item .dot.random { background: #ddd; }
+        .comparison-item .dot.ours { background: var(--accent-coral); }
+        .comparison-item .dot.optimal { background: var(--accent-teal); }
+
+        /* Section 3: Baselines */
+        .baselines-section {
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .baselines-row {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .baseline-card {
+            background: rgba(255,255,255,0.98);
+            padding: 2.5rem 3rem;
+            border-radius: 25px;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+            text-align: center;
+            min-width: 280px;
+            transition: all 0.3s ease;
+        }
+
+        .baseline-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .baseline-card.random { border-top: 5px solid #bdc3c7; }
+        .baseline-card.ours { border-top: 5px solid var(--accent-coral); }
+        .baseline-card.optimal { border-top: 5px solid var(--accent-teal); }
+
+        .baseline-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+        }
+
+        .baseline-card.random .baseline-name { color: #7f8c8d; }
+        .baseline-card.ours .baseline-name { color: var(--accent-coral); }
+        .baseline-card.optimal .baseline-name { color: var(--accent-teal); }
+
+        .baseline-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .baseline-card.random .baseline-value { color: #95a5a6; }
+        .baseline-card.ours .baseline-value { color: var(--accent-coral); }
+        .baseline-card.optimal .baseline-value { color: var(--accent-teal); }
+
+        .baseline-desc {
+            font-size: 1.5rem;
+            color: var(--text-medium);
+            line-height: 1.5;
+        }
+
+        .baseline-formula {
+            font-size: 1.2rem;
+            color: var(--text-medium);
+            margin-top: 0.5rem;
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        /* Section 4: Key Finding */
+        .finding-section {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .tasks-row {
+            display: flex;
+            gap: 2.5rem;
+            justify-content: center;
+        }
+
+        .task-card {
+            background: rgba(255,255,255,0.98);
+            padding: 2.5rem 3rem;
+            border-radius: 25px;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+            text-align: center;
+            min-width: 380px;
+            transition: all 0.3s ease;
+        }
+
+        .task-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .task-card.task1 { border-top: 5px solid #74b9ff; }
+        .task-card.task2 { border-top: 5px solid var(--accent-teal); }
+
+        .task-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .task-card.task1 .task-icon { color: #74b9ff; }
+        .task-card.task2 .task-icon { color: var(--accent-teal); }
+
+        .task-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .task-card.task1 .task-name { color: #0984e3; }
+        .task-card.task2 .task-name { color: var(--accent-teal); }
+
+        .task-result {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--accent-coral);
+            margin-bottom: 0.5rem;
+        }
+
+        .task-detail {
+            font-size: 1.6rem;
+            color: var(--text-medium);
+            line-height: 1.5;
+        }
+
+        .task-comparison {
+            font-size: 1.3rem;
+            color: var(--text-medium);
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+
+        /* Progress indicator */
+        .progress-dots {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 2rem;
+        }
+
+        .progress-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .progress-dot.active {
+            background: var(--accent-coral);
+            transform: scale(1.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="sky-background"></div>
+
+    <div class="study-slide">
+        <h1 class="slide-title">User Study Results</h1>
+
+        <!-- Control Buttons -->
+        <div class="controls">
+            <button class="control-btn data active" onclick="showSection('data')">
+                <i class="fas fa-database"></i> Data
+            </button>
+            <button class="control-btn matrices" onclick="showSection('matrices')">
+                <i class="fas fa-th"></i> Confusion Matrices
+            </button>
+            <button class="control-btn metrics" onclick="showSection('metrics')">
+                <i class="fas fa-chart-line"></i> Improvements
+            </button>
+            <button class="control-btn baselines" onclick="showSection('baselines')">
+                <i class="fas fa-balance-scale"></i> Baselines
+            </button>
+            <button class="control-btn finding" onclick="showSection('finding')">
+                <i class="fas fa-lightbulb"></i> Key Finding
+            </button>
+        </div>
+
+        <div class="content-area">
+            <!-- Section 0: Data Stats -->
+            <div class="section data-section active" id="data">
+                <div class="stat-circle">
+                    <div class="stat-value">304</div>
+                    <div class="stat-label">Responses</div>
+                </div>
+                <div class="stat-circle">
+                    <div class="stat-value">5,472</div>
+                    <div class="stat-label">Judgments</div>
+                </div>
+            </div>
+
+            <!-- Section 1: Confusion Matrices -->
+            <div class="section matrices-section" id="matrices">
+                <!-- Illustration: Single animal, single segment -->
+                <div class="illustration-row">
+                    <span class="illustration-label">Per cloud × animal:</span>
+                    <div class="illustration-example">
+                        <img src="../1_original.jpg" alt="Cloud" class="mini-cloud-img">
+                        <span class="mini-animal">× Cat</span>
+                        <span>→</span>
+                        <div class="mini-matrix">
+                            <div class="mini-cell yes">3</div>
+                            <div class="mini-cell no">2</div>
+                            <div class="mini-cell no">1</div>
+                            <div class="mini-cell no">12</div>
+                        </div>
+                    </div>
+                    <i class="fas fa-arrow-right sum-arrow"></i>
+                    <span class="sum-label">Σ all clouds × animals</span>
+                </div>
+
+                <!-- Aggregated matrices -->
+                <div class="matrices-row">
+                    <div class="matrix-card before">
+                        <div class="matrix-label">Before Enhancement</div>
+                        <div class="matrix-grid">
+                            <div class="matrix-cell"></div>
+                            <div class="matrix-cell matrix-header">Human: Yes</div>
+                            <div class="matrix-cell matrix-header">Human: No</div>
+                            <div class="matrix-cell matrix-row-label">Model: Yes</div>
+                            <div class="matrix-cell matrix-value tp">49</div>
+                            <div class="matrix-cell matrix-value fp">407</div>
+                            <div class="matrix-cell matrix-row-label">Model: No</div>
+                            <div class="matrix-cell matrix-value fn">129</div>
+                            <div class="matrix-cell matrix-value tn">2151</div>
+                        </div>
+                    </div>
+
+                    <div class="matrix-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+
+                    <div class="matrix-card after">
+                        <div class="matrix-label">After Enhancement</div>
+                        <div class="matrix-grid">
+                            <div class="matrix-cell"></div>
+                            <div class="matrix-cell matrix-header">Human: Yes</div>
+                            <div class="matrix-cell matrix-header">Human: No</div>
+                            <div class="matrix-cell matrix-row-label">Model: Yes</div>
+                            <div class="matrix-cell matrix-value tp">138</div>
+                            <div class="matrix-cell matrix-value fp">318</div>
+                            <div class="matrix-cell matrix-row-label">Model: No</div>
+                            <div class="matrix-cell matrix-value fn">111</div>
+                            <div class="matrix-cell matrix-value tn">2169</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2: Big Metrics -->
+            <div class="section metrics-section" id="metrics">
+                <div class="metrics-row">
+                    <div class="metric-card">
+                        <div class="metric-name">Precision</div>
+                        <div class="metric-improvement">3x</div>
+                        <div class="metric-arrow">
+                            <span class="metric-before">0.11</span>
+                            <i class="fas fa-long-arrow-alt-right"></i>
+                            <span class="metric-after">0.30</span>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-name">Recall</div>
+                        <div class="metric-improvement">2x</div>
+                        <div class="metric-arrow">
+                            <span class="metric-before">0.28</span>
+                            <i class="fas fa-long-arrow-alt-right"></i>
+                            <span class="metric-after">0.55</span>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-name">F1 Score</div>
+                        <div class="metric-improvement">2.4x</div>
+                        <div class="metric-arrow">
+                            <span class="metric-before">0.16</span>
+                            <i class="fas fa-long-arrow-alt-right"></i>
+                            <span class="metric-after">0.39</span>
+                        </div>
+                    </div>
+                </div>
+
+                </div>
+
+            <!-- Section 3: Baselines -->
+            <div class="section baselines-section" id="baselines">
+                <div class="baselines-row">
+                    <div class="baseline-card random">
+                        <div class="baseline-name">Random</div>
+                        <div class="baseline-value">0.06</div>
+                        <div class="baseline-desc">Coin flip (p=0.5) for<br>each of 9 animals</div>
+                    </div>
+                    <div class="baseline-card ours">
+                        <div class="baseline-name">Ours</div>
+                        <div class="baseline-value">0.39</div>
+                        <div class="baseline-desc">After enhancement<br>method (MDDS)</div>
+                    </div>
+                    <div class="baseline-card optimal">
+                        <div class="baseline-name">Optimal</div>
+                        <div class="baseline-value">0.45</div>
+                        <div class="baseline-desc">Predict if ≥26% of<br>participants agree</div>
+                        <div class="baseline-formula">(threshold search)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 4: Key Finding -->
+            <div class="section finding-section" id="finding">
+                <div class="tasks-row">
+                    <div class="task-card task1">
+                        <div class="task-icon"><i class="fas fa-search"></i></div>
+                        <div class="task-name">Task 1: Prediction</div>
+                        <div class="task-result">4x</div>
+                        <div class="task-detail">Recall 0.28 vs 0.07</div>
+                        <div class="task-comparison">vs random baseline</div>
+                    </div>
+                    <div class="task-card task2">
+                        <div class="task-icon"><i class="fas fa-magic"></i></div>
+                        <div class="task-name">Task 2: Enhancement</div>
+                        <div class="task-result">2.4x</div>
+                        <div class="task-detail">F1 0.16 → 0.39</div>
+                        <div class="task-comparison">after watching video</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Dots -->
+        <div class="progress-dots">
+            <div class="progress-dot active" onclick="showSection('data')"></div>
+            <div class="progress-dot" onclick="showSection('matrices')"></div>
+            <div class="progress-dot" onclick="showSection('metrics')"></div>
+            <div class="progress-dot" onclick="showSection('baselines')"></div>
+            <div class="progress-dot" onclick="showSection('finding')"></div>
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+
+            // Update buttons
+            document.querySelectorAll('.control-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector(`.control-btn.${sectionId}`).classList.add('active');
+
+            // Update progress dots
+            const sections = ['data', 'matrices', 'metrics', 'baselines', 'finding'];
+            document.querySelectorAll('.progress-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', sections[i] === sectionId);
+            });
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            const sections = ['data', 'matrices', 'metrics', 'baselines', 'finding'];
+            const currentActive = document.querySelector('.section.active');
+            const currentIndex = sections.indexOf(currentActive.id);
+
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                const nextIndex = (currentIndex + 1) % sections.length;
+                showSection(sections[nextIndex]);
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                const prevIndex = (currentIndex - 1 + sections.length) % sections.length;
+                showSection(sections[prevIndex]);
+            }
+        });
+    </script>
+</body>
+</html>

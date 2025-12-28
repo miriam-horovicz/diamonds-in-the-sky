@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MDDS: Masked Delta Denoising Score</title>
+    <link rel="stylesheet" href="../styles-v2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .mdds-slide {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 40px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .slide-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 0;
+            text-shadow: 0 2px 15px rgba(255,255,255,0.6);
+            text-align: center;
+        }
+
+        .slide-subtitle {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.8rem;
+            color: var(--text-dark);
+            margin-top: 0.5rem;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        /* Diagram */
+        .diagram-wrapper {
+            position: relative;
+        }
+
+        .main-diagram {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+
+        .main-diagram img {
+            height: 420px;
+            width: auto;
+            display: block;
+        }
+
+        /* Hotspots */
+        .hotspot {
+            position: absolute;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+            color: white;
+            font-weight: 700;
+            font-size: 1.75rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .hotspot::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: inherit;
+            animation: pulse 2s infinite;
+            z-index: -1;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.5); opacity: 0; }
+        }
+
+        .hotspot:hover, .hotspot.active {
+            transform: scale(1.15);
+        }
+
+        .hotspot.active::before {
+            animation: none;
+        }
+
+        .hotspot-1 { top: 12%; left: 8%; background: #3498db; }
+        .hotspot-2 { top: 12%; left: 28%; background: var(--accent-gold); }
+        .hotspot-3 { top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--accent-coral); }
+        .hotspot-4 { top: 50%; right: 5%; transform: translateY(-50%); background: var(--accent-teal); }
+
+        /* Info Panel - fixed width container */
+        .info-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            width: 380px;
+            min-width: 380px;
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .info-content {
+            display: none;
+        }
+
+        .info-content.active {
+            display: block;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .panel-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.75rem;
+        }
+
+        .panel-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .panel-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.75rem;
+            color: var(--text-medium);
+            line-height: 1.5;
+        }
+
+        .panel-code {
+            background: #f0f4f8;
+            padding: 0.7rem 1rem;
+            border-radius: 10px;
+            font-family: 'Fira Code', monospace;
+            font-size: 1.75rem;
+            color: var(--accent-coral);
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+
+        .panel-formula {
+            background: linear-gradient(135deg, var(--text-dark), #34495e);
+            padding: 1rem 1.2rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .panel-formula-text {
+            font-family: 'Georgia', serif;
+            font-size: 1.75rem;
+            color: white;
+            white-space: nowrap;
+        }
+
+        .panel-formula-text .hl { color: var(--accent-gold); }
+        .panel-formula-text .mask { color: #3498db; }
+
+        .info-content { display: none; }
+        .info-content.active { display: block; }
+
+        /* Bottom */
+        .bottom-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .citation {
+            font-size: 1.75rem;
+            color: var(--text-medium);
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="sky-background"></div>
+
+    <div class="mdds-slide">
+        <div class="slide-header">
+            <h1 class="slide-title">MDDS</h1>
+            <p class="slide-subtitle">Masked DDS for spatial control</p>
+        </div>
+
+        <div class="main-content">
+            <div class="diagram-wrapper">
+                <div class="main-diagram">
+                    <img src="../mdds_diagram.jpeg" alt="MDDS Method">
+                </div>
+                <div class="hotspot hotspot-1" data-info="info-1">1</div>
+                <div class="hotspot hotspot-2" data-info="info-2">2</div>
+                <div class="hotspot hotspot-3" data-info="info-3">3</div>
+                <div class="hotspot hotspot-4" data-info="info-4">M</div>
+            </div>
+
+            <div class="info-panel">
+                <div class="info-content" id="info-1">
+                    <div class="panel-header">
+                        <div class="panel-icon" style="background: #3498db;"><i class="fas fa-crop-alt"></i></div>
+                        <div class="panel-title">Cloud Mask</div>
+                    </div>
+                    <div class="panel-code">mask = segment(cloud)</div>
+                </div>
+
+                <div class="info-content" id="info-2">
+                    <div class="panel-header">
+                        <div class="panel-icon" style="background: var(--accent-gold);"><i class="fas fa-cloud"></i></div>
+                        <div class="panel-title">Input Cloud</div>
+                    </div>
+                </div>
+
+                <div class="info-content" id="info-3">
+                    <div class="panel-header">
+                        <div class="panel-icon" style="background: var(--accent-coral);"><i class="fas fa-random"></i></div>
+                        <div class="panel-title">Delta Score</div>
+                    </div>
+                    <div class="panel-code">cloud → animal</div>
+                </div>
+
+                <div class="info-content" id="info-4">
+                    <div class="panel-header">
+                        <div class="panel-icon" style="background: var(--accent-teal);"><i class="fas fa-mask"></i></div>
+                        <div class="panel-title">MDDS Formula</div>
+                    </div>
+                    <div class="panel-formula">
+                        <span class="panel-formula-text">L = M ⊙ ‖ ε<sub>tgt</sub> − ε<sub>src</sub> ‖²</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const hotspots = document.querySelectorAll('.hotspot');
+        const infoContents = document.querySelectorAll('.info-content');
+        let activeHotspot = null;
+
+        hotspots.forEach(hotspot => {
+            hotspot.addEventListener('click', function() {
+                const targetId = this.dataset.info;
+                if (activeHotspot === this) { resetToDefault(); return; }
+                hotspots.forEach(h => h.classList.remove('active'));
+                infoContents.forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                document.getElementById(targetId).classList.add('active');
+                activeHotspot = this;
+            });
+        });
+
+        function resetToDefault() {
+            hotspots.forEach(h => h.classList.remove('active'));
+            infoContents.forEach(c => c.classList.remove('active'));
+            activeHotspot = null;
+        }
+
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.hotspot') && !e.target.closest('.info-panel')) resetToDefault();
+        });
+    </script>
+</body>
+</html>

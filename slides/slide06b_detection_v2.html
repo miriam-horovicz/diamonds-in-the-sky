@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detection</title>
+    <link rel="stylesheet" href="../styles-v2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .detection-slide {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 60px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .slide-header {
+            text-align: center;
+        }
+
+        .slide-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 700;
+            color: #2c3e50;
+            text-shadow: 0 2px 15px rgba(255,255,255,0.6);
+        }
+
+        .slide-subtitle {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            color: #2c3e50;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        /* Detection image */
+        .detection-image {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+
+        .detection-image img {
+            height: 250px;
+            width: auto;
+            display: block;
+        }
+
+        /* Explanation cards */
+        .cards-row {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.2rem 2rem;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            min-width: 200px;
+        }
+
+        .info-card.detected {
+            border-bottom: 4px solid #7eb6d9;
+        }
+
+        .info-card.not-detected {
+            border-bottom: 4px solid #e76f51;
+        }
+
+        .card-icon {
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-card.detected .card-icon {
+            color: #7eb6d9;
+        }
+
+        .info-card.not-detected .card-icon {
+            color: #e76f51;
+        }
+
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.3rem;
+        }
+
+        .card-desc {
+            font-size: 1.5rem;
+            color: var(--text-medium);
+        }
+
+        /* Interpolation section */
+        .interpolation-section {
+            background: rgba(255,255,255,0.95);
+            border-radius: 30px;
+            padding: 1.2rem 2.5rem;
+            text-align: center;
+            border-top: 4px solid #7eb6d9;
+        }
+
+        .interpolation-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .interpolation-desc {
+            font-size: 1.5rem;
+            color: var(--text-medium);
+        }
+
+        .interpolation-desc .highlight {
+            color: #7eb6d9;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="sky-background"></div>
+
+    <div class="detection-slide">
+        <div class="slide-header">
+            <h1 class="slide-title">Detection</h1>
+            <p class="slide-subtitle">OneFormer for animal recognition</p>
+        </div>
+
+        <div class="main-content">
+            <div class="detection-image">
+                <img src="../detect2.jpeg" alt="Detection comparison">
+            </div>
+
+            <div class="interpolation-section">
+                <p class="interpolation-desc">
+                    <span class="highlight">Interpolation</span> between original and generated
+                </p>
+            </div>
+
+            <div class="cards-row">
+                <div class="info-card detected">
+                    <div class="card-icon"><i class="fas fa-check-circle"></i></div>
+                    <h3 class="card-title">Detected</h3>
+                    <p class="card-desc">Animal recognized</p>
+                </div>
+                <div class="info-card not-detected">
+                    <div class="card-icon"><i class="fas fa-times-circle"></i></div>
+                    <h3 class="card-title">Not Detected</h3>
+                    <p class="card-desc">No animal found</p>
+                </div>
+            </div>
+
+            </div>
+    </div>
+</body>
+</html>

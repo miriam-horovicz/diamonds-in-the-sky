@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Hook - Look, a Horse!</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .hook-slide {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 80px;
+            position: relative;
+        }
+
+        .quote-container {
+            max-width: 900px;
+            text-align: center;
+            position: relative;
+        }
+
+        .quote-mark {
+            font-size: 8rem;
+            color: rgba(255, 215, 0, 0.3);
+            position: absolute;
+            top: -60px;
+            left: -40px;
+            font-family: Georgia, serif;
+        }
+
+        .main-quote {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 600;
+            color: white;
+            line-height: 1.3;
+            margin-bottom: 2rem;
+            text-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .quote-highlight {
+            color: #ffd700;
+            font-style: italic;
+        }
+
+        .scene-description {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-style: italic;
+            margin-bottom: 3rem;
+        }
+
+        .reactions-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .reaction-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .reaction-card:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .reaction-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .reaction-card:nth-child(1) .reaction-icon { color: #ffd700; }
+        .reaction-card:nth-child(2) .reaction-icon { color: #87CEEB; }
+        .reaction-card:nth-child(3) .reaction-icon { color: #ff7e5f; }
+        .reaction-card:nth-child(4) .reaction-icon { color: #98fb98; }
+
+        .reaction-text {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .bottom-note {
+            margin-top: 3rem;
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .pareidolia-word {
+            font-weight: 700;
+            color: #ffd700;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="sky-background"></div>
+    <div class="clouds-container">
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+        <div class="cloud cloud-3"></div>
+    </div>
+
+    <div class="hook-slide">
+        <div class="quote-container">
+            <span class="quote-mark">"</span>
+            <h1 class="main-quote">
+                Look, a <span class="quote-highlight">horse!</span>
+            </h1>
+            <p class="scene-description">
+                A child excitedly points at the cloudy sky during recess...
+            </p>
+        </div>
+
+        <div class="reactions-grid">
+            <div class="reaction-card">
+                <div class="reaction-icon"><i class="fas fa-horse"></i></div>
+                <p class="reaction-text">Some see<br><strong>the horse</strong></p>
+            </div>
+            <div class="reaction-card">
+                <div class="reaction-icon"><i class="fas fa-sheep"></i></div>
+                <p class="reaction-text">Others see<br><strong>a sheep</strong></p>
+            </div>
+            <div class="reaction-card">
+                <div class="reaction-icon"><i class="fas fa-question"></i></div>
+                <p class="reaction-text">A few see<br><strong>just clouds</strong></p>
+            </div>
+            <div class="reaction-card">
+                <div class="reaction-icon"><i class="fas fa-lightbulb"></i></div>
+                <p class="reaction-text">With a hint...<br><strong>they see it!</strong></p>
+            </div>
+        </div>
+
+        <p class="bottom-note">
+            This phenomenon is called <span class="pareidolia-word">Pareidolia</span>
+        </p>
+    </div>
+</body>
+</html>

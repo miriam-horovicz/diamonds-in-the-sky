@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pareidolia</title>
+    <link rel="stylesheet" href="../styles-v2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .pareidolia-slide {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 60px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .slide-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 15px rgba(255,255,255,0.6);
+        }
+
+        .slide-definition {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            color: white;
+            text-align: center;
+            margin-bottom: 1rem;
+            background: #7eb6d9;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(126, 182, 217, 0.4);
+        }
+
+        .slide-definition strong {
+            color: #2c3e50;
+            font-weight: 700;
+        }
+
+        /* Famous examples section */
+        .famous-section {
+            margin-bottom: 1rem;
+        }
+
+        .section-label {
+            font-size: 1.75rem;
+            color: var(--text-medium);
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .famous-row {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .famous-card {
+            background: white;
+            border-radius: 15px;
+            padding: 0.5rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .famous-card:hover {
+            transform: scale(1.8);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+            z-index: 100;
+        }
+
+        .famous-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .famous-label {
+            margin-top: 0.75rem;
+            font-size: 1.75rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .famous-desc {
+            font-size: 1.75rem;
+            color: var(--accent-coral);
+            font-style: italic;
+        }
+
+        /* Our Focus Button */
+        .focus-btn {
+            background: #7eb6d9;
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-size: 1.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: all 0.5s ease;
+            box-shadow: 0 4px 15px rgba(126, 182, 217, 0.4);
+        }
+
+        .focus-btn:hover {
+            background: #6aa6c9;
+            transform: scale(1.05);
+        }
+
+        .focus-btn i {
+            margin-right: 0.5rem;
+        }
+
+        /* Focus section */
+        .focus-section {
+            background: rgba(255,255,255,0.95);
+            border-radius: 30px;
+            padding: 1rem 2.5rem;
+            text-align: center;
+            border-top: 4px solid #7eb6d9;
+            margin-top: 0.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .focus-section.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .focus-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: #7eb6d9;
+            margin-bottom: 0.5rem;
+        }
+
+        .focus-title i {
+            margin-right: 0.5rem;
+        }
+
+        .focus-label {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            color: #7eb6d9;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .focus-label i {
+            margin-right: 0.5rem;
+        }
+
+        .cloud-examples {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .cloud-card {
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cloud-card:hover {
+            transform: scale(1.05);
+        }
+
+        .cloud-card img {
+            width: 140px;
+            height: 105px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .cloud-label {
+            margin-top: 0.5rem;
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+    </style>
+</head>
+<body>
+    <div class="sky-background"></div>
+
+    <div class="pareidolia-slide">
+        <h1 class="slide-title">Pareidolia</h1>
+        <p class="slide-definition">
+            Seeing <strong>meaningful patterns</strong> where none exist
+        </p>
+
+        <!-- Famous examples -->
+        <div class="famous-section">
+            <div class="famous-row">
+                <div class="famous-card">
+                    <img src="../pareidolia1.jpg" alt="Pareidolia example 1">
+                </div>
+                <div class="famous-card">
+                    <img src="../pareidolia2.jpg" alt="Pareidolia example 2">
+                </div>
+                <div class="famous-card">
+                    <img src="../pareidolia3.jpg" alt="Pareidolia example 3">
+                </div>
+                <div class="famous-card">
+                    <img src="../pareidolia4.jpg" alt="Pareidolia example 4">
+                </div>
+            </div>
+        </div>
+
+        <!-- Our Focus Button -->
+        <button class="focus-btn" id="focus-btn">
+            <i class="fas fa-cloud"></i> Our Focus
+        </button>
+
+        <!-- Our focus -->
+        <div class="focus-section" id="focus-section">
+            <p class="focus-label"><i class="fas fa-cloud"></i> Clouds</p>
+            <div class="cloud-examples">
+                <div class="cloud-card">
+                    <img src="../1_original.jpg" alt="Cloud example 1">
+                    <p class="cloud-label">What animal do you see?</p>
+                </div>
+                <div class="cloud-card">
+                    <img src="../2_original.jpg" alt="Cloud example 2">
+                    <p class="cloud-label">And here?</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('focus-btn').addEventListener('click', function() {
+            document.getElementById('focus-section').classList.add('visible');
+            this.style.opacity = '0';
+            this.style.visibility = 'hidden';
+        });
+    </script>
+</body>
+</html>

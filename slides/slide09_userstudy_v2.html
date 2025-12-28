@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Study</title>
+    <link rel="stylesheet" href="../styles-v2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .study-slide {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 50px 60px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .slide-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 2rem;
+            text-shadow: 0 2px 15px rgba(255,255,255,0.6);
+            text-align: center;
+        }
+
+        /* Phase indicator */
+        .phase-indicator {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .phase-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #ddd;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .phase-dot:hover { transform: scale(1.2); }
+        .phase-dot.active { background: var(--accent-coral); transform: scale(1.3); }
+        .phase-dot.completed { background: var(--accent-teal); }
+
+        /* Main content area */
+        .content-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        /* Stats row - always visible */
+        .stats-row {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .stat-circle {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            transition: all 0.3s ease;
+        }
+
+        .stat-circle:hover {
+            transform: translateY(-5px) scale(1.05);
+        }
+
+        .stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--accent-coral);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-medium);
+        }
+
+        /* Protocol flow - Phase 1 */
+        .protocol-flow {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .protocol-flow.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .protocol-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--accent-coral);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            margin-bottom: 0.5rem;
+        }
+
+        .step-text {
+            font-size: 1rem;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .flow-arrow {
+            font-size: 1.8rem;
+            color: var(--accent-teal);
+        }
+
+        /* Results section - Phase 2 */
+        .results-area {
+            display: flex;
+            gap: 2.5rem;
+            align-items: flex-start;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .results-area.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Visual comparison */
+        .comparison-visual {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .comparison-bars {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-end;
+            height: 180px;
+            padding: 1rem 2rem;
+            background: rgba(255,255,255,0.9);
+            border-radius: 20px;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+        }
+
+        .bar-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .bar-fill {
+            width: 50px;
+            border-radius: 8px 8px 0 0;
+            transition: height 0.8s ease;
+        }
+
+        .bar-fill.before { background: linear-gradient(180deg, #74b9ff, #0984e3); }
+        .bar-fill.after { background: linear-gradient(180deg, var(--accent-teal), #1a9985); }
+
+        .bar-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .bar-name {
+            font-size: 0.9rem;
+            color: var(--text-medium);
+        }
+
+        .comparison-label {
+            font-size: 1rem;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        /* Key metrics */
+        .key-metrics {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .metric-card {
+            background: rgba(255,255,255,0.95);
+            padding: 1.2rem 1.8rem;
+            border-radius: 20px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateX(5px);
+        }
+
+        .metric-icon {
+            font-size: 1.5rem;
+            color: var(--accent-coral);
+        }
+
+        .metric-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .metric-name {
+            font-size: 0.85rem;
+            color: var(--text-medium);
+        }
+
+        .metric-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--accent-teal);
+        }
+
+        /* Key finding - Phase 2 */
+        .key-finding {
+            background: linear-gradient(135deg, rgba(42,157,143,0.15), rgba(231,111,81,0.15));
+            padding: 1.2rem 2rem;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease 0.3s;
+        }
+
+        .key-finding.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .finding-icon {
+            font-size: 2rem;
+            color: var(--accent-teal);
+        }
+
+        .finding-text {
+            font-size: 1.2rem;
+            color: var(--text-dark);
+        }
+
+        .finding-text strong {
+            color: var(--accent-coral);
+        }
+
+        /* Controls */
+        .controls {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .control-btn {
+            background: white;
+            border: 1px solid var(--accent-coral);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            color: var(--accent-coral);
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .control-btn:hover {
+            background: var(--accent-coral);
+            color: white;
+        }
+
+        .control-btn.primary {
+            background: var(--accent-coral);
+            color: white;
+        }
+
+        .control-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="sky-background"></div>
+
+    <div class="study-slide">
+        <h1 class="slide-title">User Study</h1>
+
+        <!-- Phase indicator -->
+        <div class="phase-indicator">
+            <div class="phase-dot" id="dot-1" onclick="goToPhase(1)"></div>
+            <div class="phase-dot" id="dot-2" onclick="goToPhase(2)"></div>
+        </div>
+
+        <div class="content-area">
+            <!-- Stats - always visible -->
+            <div class="stats-row">
+                <div class="stat-circle">
+                    <div class="stat-value">304</div>
+                    <div class="stat-label">Responses</div>
+                </div>
+                <div class="stat-circle">
+                    <div class="stat-value">9</div>
+                    <div class="stat-label">Animals</div>
+                </div>
+                <div class="stat-circle">
+                    <div class="stat-value">5,472</div>
+                    <div class="stat-label">Judgments</div>
+                </div>
+            </div>
+
+            <!-- Phase 1: Protocol -->
+            <div class="protocol-flow" id="phase-1">
+                <div class="protocol-step">
+                    <div class="step-icon"><i class="fas fa-cloud"></i></div>
+                    <div class="step-text">View Cloud</div>
+                </div>
+                <i class="fas fa-arrow-right flow-arrow"></i>
+                <div class="protocol-step">
+                    <div class="step-icon"><i class="fas fa-play-circle"></i></div>
+                    <div class="step-text">Watch Video</div>
+                </div>
+                <i class="fas fa-arrow-right flow-arrow"></i>
+                <div class="protocol-step">
+                    <div class="step-icon"><i class="fas fa-redo"></i></div>
+                    <div class="step-text">Re-evaluate</div>
+                </div>
+            </div>
+
+            <!-- Phase 2: Results -->
+            <div class="results-area" id="phase-2">
+                <div class="comparison-visual">
+                    <div class="comparison-bars">
+                        <div class="bar-item">
+                            <div class="bar-fill before" id="bar-before"></div>
+                            <div class="bar-value">0.16</div>
+                            <div class="bar-name">Before</div>
+                        </div>
+                        <div class="bar-item">
+                            <div class="bar-fill after" id="bar-after"></div>
+                            <div class="bar-value">0.39</div>
+                            <div class="bar-name">After</div>
+                        </div>
+                    </div>
+                    <div class="comparison-label">F1 Score</div>
+                </div>
+
+                <div class="key-metrics">
+                    <div class="metric-card">
+                        <i class="fas fa-arrow-up metric-icon"></i>
+                        <div class="metric-info">
+                            <div class="metric-name">Precision</div>
+                            <div class="metric-value">3× better</div>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <i class="fas fa-arrow-up metric-icon"></i>
+                        <div class="metric-info">
+                            <div class="metric-name">Recall</div>
+                            <div class="metric-value">2× better</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Finding -->
+            <div class="key-finding" id="finding">
+                <i class="fas fa-lightbulb finding-icon"></i>
+                <div class="finding-text">
+                    Enhancement videos help users <strong>see what the model sees</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <button class="control-btn" id="reset-btn" onclick="resetPhases()">
+                <i class="fas fa-redo"></i> Reset
+            </button>
+            <button class="control-btn primary" id="next-btn" onclick="nextPhase()">
+                Next <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let currentPhase = 0;
+        const totalPhases = 2;
+
+        function updateView() {
+            // Update dots
+            for (let i = 1; i <= totalPhases; i++) {
+                const dot = document.getElementById(`dot-${i}`);
+                dot.classList.remove('active', 'completed');
+                if (i < currentPhase) dot.classList.add('completed');
+                if (i === currentPhase) dot.classList.add('active');
+            }
+
+            // Phase 1: Protocol
+            const phase1 = document.getElementById('phase-1');
+            phase1.classList.toggle('visible', currentPhase >= 1);
+
+            // Phase 2: Results
+            const phase2 = document.getElementById('phase-2');
+            const finding = document.getElementById('finding');
+            phase2.classList.toggle('visible', currentPhase >= 2);
+            finding.classList.toggle('visible', currentPhase >= 2);
+
+            // Animate bars
+            if (currentPhase >= 2) {
+                document.getElementById('bar-before').style.height = '50px';
+                document.getElementById('bar-after').style.height = '130px';
+            } else {
+                document.getElementById('bar-before').style.height = '0';
+                document.getElementById('bar-after').style.height = '0';
+            }
+
+            // Update button
+            document.getElementById('next-btn').disabled = currentPhase >= totalPhases;
+        }
+
+        function nextPhase() {
+            if (currentPhase < totalPhases) {
+                currentPhase++;
+                updateView();
+            }
+        }
+
+        function resetPhases() {
+            currentPhase = 0;
+            updateView();
+        }
+
+        function goToPhase(phase) {
+            currentPhase = phase;
+            updateView();
+        }
+
+        // Initialize
+        updateView();
+    </script>
+</body>
+</html>

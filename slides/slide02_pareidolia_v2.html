@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pareidolia</title>
+    <link rel="stylesheet" href="../styles-v2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .pareidolia-slide {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 60px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Title */
+        .slide-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 2rem;
+            text-shadow: 0 2px 15px rgba(255,255,255,0.6);
+            text-align: center;
+        }
+
+        /* Definition - minimal */
+        .definition {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-style: italic;
+            color: var(--text-medium);
+            text-align: center;
+            max-width: 800px;
+            margin-bottom: 2.5rem;
+        }
+
+        .definition strong {
+            color: var(--accent-coral);
+            font-style: normal;
+        }
+
+        /* Examples grid */
+        .examples-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            max-width: 1000px;
+        }
+
+        .example-cloud {
+            padding: 1.2rem;
+            border-radius: 80px;
+            text-align: center;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .example-cloud::before {
+            width: 50%;
+            height: 65%;
+            top: -30%;
+            left: 10%;
+        }
+
+        .example-cloud::after {
+            width: 40%;
+            height: 50%;
+            top: -22%;
+            right: 12%;
+        }
+
+        .example-image {
+            width: 180px;
+            height: 180px;
+            border-radius: 20px;
+            margin: 0 auto 0.75rem;
+            overflow: hidden;
+            background: linear-gradient(135deg, #e8f4fc 0%, #b8d4e8 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 5;
+        }
+
+        .example-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Placeholder icons for now */
+        .example-image i {
+            font-size: 4.5rem;
+            color: var(--sky-darker);
+            opacity: 0.6;
+        }
+
+        .example-label {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            position: relative;
+            z-index: 5;
+        }
+
+        .example-sees {
+            font-size: 1.5rem;
+            color: var(--accent-coral);
+            font-style: italic;
+            position: relative;
+            z-index: 5;
+        }
+
+        .example-cloud:hover {
+            transform: translateY(-10px) scale(1.03);
+        }
+
+        /* Greek origin note */
+        .origin-note {
+            margin-top: 2rem;
+            font-size: 1rem;
+            color: var(--text-medium);
+            text-align: center;
+        }
+
+        .origin-note span {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            color: var(--accent-teal);
+        }
+    </style>
+</head>
+<body>
+    <div class="sky-background"></div>
+
+    <div class="pareidolia-slide">
+        <h1 class="slide-title">Pareidolia</h1>
+
+        <p class="definition">
+            Seeing <strong>familiar patterns</strong> — faces, animals, objects — in random stimuli
+        </p>
+
+        <div class="examples-grid">
+            <div class="cloud-container example-cloud">
+                <div class="example-image">
+                    <i class="fas fa-plug"></i>
+                </div>
+                <p class="example-label">Wall Outlet</p>
+                <p class="example-sees">sees: face</p>
+            </div>
+
+            <div class="cloud-container example-cloud">
+                <div class="example-image">
+                    <i class="fas fa-moon"></i>
+                </div>
+                <p class="example-label">Moon</p>
+                <p class="example-sees">sees: man</p>
+            </div>
+
+            <div class="cloud-container example-cloud">
+                <div class="example-image">
+                    <i class="fas fa-bread-slice"></i>
+                </div>
+                <p class="example-label">Toast</p>
+                <p class="example-sees">sees: face</p>
+            </div>
+
+            <div class="cloud-container example-cloud">
+                <div class="example-image">
+                    <i class="fas fa-cloud"></i>
+                </div>
+                <p class="example-label">Cloud</p>
+                <p class="example-sees">sees: animals</p>
+            </div>
+        </div>
+
+        <p class="origin-note">
+            From Greek: <span>para</span> (beside) + <span>eidolon</span> (image)
+        </p>
+    </div>
+</body>
+</html>

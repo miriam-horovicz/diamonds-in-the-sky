@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Controlled Diffusion Fails</title>
+    <link rel="stylesheet" href="../styles-v2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .diffusion-slide {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 60px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .slide-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: #2c3e50;
+            text-shadow: 0 2px 15px rgba(255,255,255,0.6);
+        }
+
+        /* Goal section */
+        .goal-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .goal-badge {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: white;
+            text-align: center;
+            background: #7eb6d9;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(126, 182, 217, 0.4);
+        }
+
+        .goal-badge strong {
+            color: #2c3e50;
+            font-weight: 700;
+        }
+
+        /* Visual flow */
+        .flow-row {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .flow-card {
+            background: white;
+            border-radius: 15px;
+            padding: 0.8rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .flow-card img {
+            width: 140px;
+            height: 105px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .flow-label {
+            margin-top: 0.5rem;
+            font-size: 2rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .arrow-icon {
+            font-size: 2rem;
+            color: #e76f51;
+        }
+
+        .question-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border: 3px dashed #7eb6d9;
+        }
+
+        .question-icon {
+            font-size: 3rem;
+            color: #7eb6d9;
+            margin-bottom: 0.5rem;
+        }
+
+        .question-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        /* Methods section - flip cards */
+        .methods-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .methods-row {
+            display: flex;
+            gap: 3rem;
+            justify-content: center;
+            perspective: 1000px;
+            margin-top: 20px;
+        }
+
+        .flip-card {
+            width: 220px;
+            height: 220px;
+            perspective: 1000px;
+            cursor: pointer;
+            margin-top: 40px;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            overflow: visible;
+        }
+
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 1.5rem;
+            box-sizing: border-box;
+        }
+
+        .flip-card-front {
+            background: white;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+        }
+
+        .flip-card-front::before {
+            content: '';
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            width: 45%;
+            height: 55%;
+            top: -28%;
+            left: 12%;
+            box-shadow: 35% 8% 0 8% white, 70% 4% 0 4% white;
+        }
+
+        .flip-card-front::after {
+            content: '';
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            width: 30%;
+            height: 40%;
+            top: -18%;
+            right: 15%;
+        }
+
+        .flip-card:nth-child(1) .flip-card-front { border-bottom: 4px solid #7eb6d9; }
+        .flip-card:nth-child(2) .flip-card-front { border-bottom: 4px solid #e76f51; }
+
+        .flip-card-back {
+            background: white;
+            transform: rotateY(180deg);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .flip-card-back::before {
+            content: '';
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            width: 45%;
+            height: 55%;
+            top: -28%;
+            left: 12%;
+            box-shadow: 35% 8% 0 8% white, 70% 4% 0 4% white;
+        }
+
+        .flip-card-back::after {
+            content: '';
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            width: 30%;
+            height: 40%;
+            top: -18%;
+            right: 15%;
+        }
+
+        .flip-card:nth-child(1) .flip-card-back { border-bottom: 4px solid #7eb6d9; }
+        .flip-card:nth-child(2) .flip-card-back { border-bottom: 4px solid #e76f51; }
+
+        .method-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 5;
+        }
+
+        .flip-card:nth-child(1) .method-icon { color: #7eb6d9; }
+        .flip-card:nth-child(2) .method-icon { color: #e76f51; }
+
+        .method-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            position: relative;
+            z-index: 5;
+        }
+
+        .back-image {
+            width: 140px;
+            height: 105px;
+            border-radius: 12px;
+            object-fit: cover;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            position: relative;
+            z-index: 5;
+            margin-bottom: 0.5rem;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .back-image:hover {
+            transform: scale(1.8);
+            z-index: 100;
+        }
+
+        .back-label {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            font-weight: 600;
+            position: relative;
+            z-index: 5;
+        }
+
+        .flip-card:nth-child(1) .back-label { color: #7eb6d9; }
+        .flip-card:nth-child(2) .back-label { color: #e76f51; }
+
+        /* DDS card */
+        .flip-card.dds-card .flip-card-front { border-bottom: 4px solid #2c3e50; }
+        .flip-card.dds-card .flip-card-back { border-bottom: 4px solid #2c3e50; }
+        .flip-card.dds-card .method-icon { color: #2c3e50; }
+        .flip-card.dds-card .back-label { color: #2c3e50; }
+
+        .method-subtitle {
+            font-size: 1.5rem;
+            color: var(--text-medium);
+            font-style: italic;
+            position: relative;
+            z-index: 5;
+        }
+
+        /* Problem explanation */
+        .problem-section {
+            background: rgba(255,255,255,0.95);
+            border-radius: 30px;
+            padding: 1rem 2.5rem;
+            text-align: center;
+            border-top: 4px solid #e76f51;
+        }
+
+        .problem-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            color: var(--text-dark);
+        }
+
+        .problem-text .highlight {
+            color: #e76f51;
+            font-weight: 600;
+        }
+
+        /* DDS teaser button */
+        .dds-btn {
+            background: #7eb6d9;
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-size: 1.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(126, 182, 217, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .dds-btn:hover {
+            background: #6aa6c9;
+            transform: scale(1.05);
+        }
+
+        .dds-btn-container {
+            position: relative;
+        }
+
+        .dds-info {
+            background: #2c3e50;
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(44, 62, 80, 0.4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.3rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .dds-info.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .dds-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .dds-title i {
+            margin-right: 0.5rem;
+        }
+
+        .dds-subtitle {
+            font-size: 1.5rem;
+            font-style: italic;
+            opacity: 0.9;
+        }
+
+        /* DDS teaser section */
+        .dds-section {
+            background: rgba(255,255,255,0.95);
+            border-radius: 30px;
+            padding: 1.2rem 2.5rem;
+            text-align: center;
+            border-top: 4px solid #7eb6d9;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .dds-section.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .dds-intro {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .dds-intro strong {
+            color: #7eb6d9;
+        }
+
+        .dds-subtitle {
+            font-size: 1.75rem;
+            color: var(--text-medium);
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+
+        .dds-concept {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            font-size: 1.75rem;
+            color: var(--text-dark);
+        }
+
+        .dds-concept i {
+            color: #e76f51;
+        }
+
+        .dds-concept .animal {
+            color: #7eb6d9;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="sky-background"></div>
+
+    <div class="diffusion-slide">
+        <h1 class="slide-title">Image Generation</h1>
+
+        <!-- Goal -->
+        <div class="goal-section">
+            <p class="goal-badge">
+                <strong>Modify</strong> cloud image to reveal animal, <strong>stay similar</strong> to original
+            </p>
+
+            <div class="flow-row">
+                <div class="flow-card">
+                    <img src="../1_original.jpg" alt="Cloud">
+                    <p class="flow-label">Cloud</p>
+                </div>
+                <i class="fas fa-arrow-right arrow-icon"></i>
+                <div class="question-card">
+                    <div class="question-icon"><i class="fas fa-paw"></i></div>
+                    <p class="question-text">Subtle cat?</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Methods that fail - flip cards -->
+        <div class="methods-section">
+            <div class="methods-row">
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="method-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+                            <h3 class="method-name">Diffusion</h3>
+                        </div>
+                        <div class="flip-card-back">
+                            <img src="../D2.png" alt="Diffusion result" class="back-image">
+                            <p class="back-label">Changes structure</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="method-icon"><i class="fas fa-sliders-h"></i></div>
+                            <h3 class="method-name">ControlNet</h3>
+                        </div>
+                        <div class="flip-card-back">
+                            <img src="../D1.png" alt="ControlNet result" class="back-image">
+                            <p class="back-label">Not follow geometries</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DDS card -->
+                <div class="flip-card dds-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="method-icon"><i class="fas fa-bullseye"></i></div>
+                            <h3 class="method-name">DDS</h3>
+                        </div>
+                        <div class="flip-card-back">
+                            <p class="back-label">Controllable Optimization</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task #1</title>
+    <link rel="stylesheet" href="../styles-v2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .task-slide {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 30px 60px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .slide-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 15px rgba(255,255,255,0.6);
+        }
+
+        /* Goal badge - like subtitle in pareidolia slide */
+        .goal-badge {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: white;
+            text-align: center;
+            background: #7eb6d9;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(126, 182, 217, 0.4);
+            margin: 1rem 0;
+        }
+
+        .goal-badge strong {
+            color: #2c3e50;
+            font-weight: 700;
+        }
+
+        /* Cloud example */
+        .example-row {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .example-card {
+            background: white;
+            border-radius: 15px;
+            padding: 0.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .example-card img {
+            width: 220px;
+            height: 165px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .example-label {
+            margin-top: 0.8rem;
+            font-size: 2rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .arrow-icon {
+            font-size: 3rem;
+            color: var(--accent-coral);
+        }
+
+        .prediction-badge {
+            background: #2c3e50;
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-size: 1.75rem;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(44, 62, 80, 0.4);
+        }
+
+        .question-badge {
+            background: #2c3e50;
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-size: 3rem;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(44, 62, 80, 0.4);
+            transition: all 0.5s ease;
+            cursor: pointer;
+            position: absolute;
+        }
+
+        .question-badge:hover {
+            transform: scale(1.1);
+            background: #1a252f;
+        }
+
+        .prediction-area {
+            min-width: 280px;
+            text-align: center;
+            position: relative;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .prediction-badge {
+            position: absolute;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .prediction-badge.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .question-badge.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* Other Methods Button */
+        .methods-btn {
+            background: #e76f51;
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-size: 1.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            box-shadow: 0 4px 15px rgba(231, 111, 81, 0.4);
+        }
+
+        .methods-btn:hover {
+            background: #d35f47;
+            transform: scale(1.05);
+        }
+
+        .methods-btn i {
+            margin-right: 0.5rem;
+        }
+
+        /* Methods section (hidden by default) */
+        .methods-section {
+            background: rgba(255,255,255,0.95);
+            border-radius: 25px;
+            padding: 1rem 2rem;
+            text-align: center;
+            border-top: 4px solid #e76f51;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+            margin-top: 0.5rem;
+        }
+
+        .methods-section.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .methods-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: #e76f51;
+            margin-bottom: 0.5rem;
+        }
+
+        .methods-title i {
+            margin-right: 0.5rem;
+        }
+
+        .methods-grid {
+            display: flex;
+            gap: 2.5rem;
+            justify-content: center;
+        }
+
+        .method-card {
+            text-align: center;
+            max-width: 280px;
+        }
+
+        .method-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .method-icon-fa {
+            font-size: 1.5rem;
+            color: #7eb6d9;
+        }
+
+        .method-type {
+            font-size: 1.4rem;
+            color: var(--text-medium);
+            font-style: italic;
+            margin-bottom: 0.4rem;
+        }
+
+        .method-result {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.4rem 1rem;
+            background: #ffebee;
+            border-radius: 25px;
+            border: 2px solid #ef5350;
+        }
+
+        .method-result i {
+            color: #ef5350;
+            font-size: 1.3rem;
+        }
+
+        .method-result span {
+            font-size: 1.5rem;
+            color: #c62828;
+            font-weight: 600;
+        }
+
+        .fail-reason {
+            font-size: 1.5rem;
+            color: var(--text-medium);
+            margin-top: 0.3rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="sky-background"></div>
+
+    <div class="task-slide">
+        <h1 class="slide-title">Task #1</h1>
+
+        <!-- Goal -->
+        <p class="goal-badge">
+            <strong>Predict</strong> the animals that people can <strong>perceive</strong> in clouds
+        </p>
+
+        <!-- Example -->
+        <div class="example-row">
+            <div class="example-card">
+                <img src="../2_original.jpg" alt="Cloud example">
+                <p class="example-label">Input Cloud</p>
+            </div>
+            <i class="fas fa-arrow-right arrow-icon"></i>
+            <div class="prediction-area">
+                <div class="question-badge" id="question-badge">?</div>
+                <div class="prediction-badge" id="prediction-badge">
+                    <i class="fas fa-paw"></i> Dog / Bear / Elephant
+                </div>
+            </div>
+        </div>
+
+        <!-- Other Methods Button -->
+        <button class="methods-btn" id="methods-btn">
+            <i class="fas fa-flask"></i> Other Methods?
+        </button>
+
+        <!-- Methods section (revealed on click) -->
+        <div class="methods-section" id="methods-section">
+            <div class="methods-grid">
+                <div class="method-card">
+                    <h3 class="method-name">
+                        <i class="fas fa-tag method-icon-fa"></i>
+                        CLIP
+                    </h3>
+                    <p class="method-type">Zero-Shot Classification</p>
+                    <div class="method-result">
+                        <i class="fas fa-times"></i>
+                        <span>Fails</span>
+                    </div>
+                </div>
+                <div class="method-card">
+                    <h3 class="method-name">
+                        <i class="fas fa-object-group method-icon-fa"></i>
+                        OneFormer
+                    </h3>
+                    <p class="method-type">Object Detection</p>
+                    <div class="method-result">
+                        <i class="fas fa-times"></i>
+                        <span>Fails</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('question-badge').addEventListener('click', function() {
+            this.classList.add('hidden');
+            document.getElementById('prediction-badge').classList.add('visible');
+        });
+
+        document.getElementById('methods-btn').addEventListener('click', function() {
+            document.getElementById('methods-section').classList.add('visible');
+            this.style.opacity = '0';
+            this.style.visibility = 'hidden';
+        });
+    </script>
+</body>
+</html>

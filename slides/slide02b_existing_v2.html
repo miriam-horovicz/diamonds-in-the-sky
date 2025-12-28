@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task #2</title>
+    <link rel="stylesheet" href="../styles-v2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .task-slide {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 60px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .slide-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 15px rgba(255,255,255,0.6);
+        }
+
+        /* Goal badge */
+        .goal-badge {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: white;
+            text-align: center;
+            background: #7eb6d9;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(126, 182, 217, 0.4);
+        }
+
+        .goal-badge strong {
+            color: #2c3e50;
+            font-weight: 700;
+        }
+
+        .insight-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--text-medium);
+            font-style: italic;
+        }
+
+        .insight-text i {
+            color: #f4a261;
+            margin-right: 0.5rem;
+        }
+
+        .insight-text strong {
+            color: #e76f51;
+            font-weight: 600;
+        }
+
+        /* Visual concept */
+        .concept-row {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            align-items: center;
+            margin: 1rem 0;
+        }
+
+        .concept-card {
+            background: white;
+            border-radius: 20px;
+            padding: 1rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .concept-card img {
+            width: 160px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .concept-label {
+            margin-top: 0.5rem;
+            font-size: 1.75rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .arrow-icon {
+            font-size: 2.5rem;
+            color: var(--accent-coral);
+        }
+
+        .magic-icon {
+            font-size: 3rem;
+            color: #7eb6d9;
+        }
+
+        /* Toggle buttons */
+        .toggle-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .toggle-btn {
+            background: white;
+            color: #2c3e50;
+            border: 2px solid #2c3e50;
+            padding: 0.8rem 2.5rem;
+            border-radius: 50px;
+            font-size: 1.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .toggle-btn.active {
+            background: #2c3e50;
+            color: white;
+        }
+
+        /* State containers */
+        .state-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .state-container.hidden {
+            display: none;
+        }
+
+        .concept-card {
+            position: relative;
+        }
+
+        .concept-card img {
+            width: 200px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        #after-state .concept-card img {
+            border: 3px solid #7eb6d9;
+        }
+
+        .hint-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+        }
+
+        .head-circle {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border: 3px solid #e76f51;
+            border-radius: 50%;
+            top: 5%;
+            left: 45%;
+        }
+
+        .head-label {
+            position: absolute;
+            top: -5%;
+            left: 65%;
+            background: #e76f51;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .person-card {
+            background: white;
+            border-radius: 50px;
+            padding: 1rem 2rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .person-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .person-icon.before {
+            color: #95a5a6;
+        }
+
+        .person-icon.after {
+            color: #e76f51;
+        }
+
+        .person-text {
+            font-size: 1.75rem;
+            color: var(--text-medium);
+        }
+
+        .person-text strong {
+            color: var(--text-dark);
+        }
+
+        /* Question */
+        .question-cloud {
+            background: rgba(255,255,255,0.95);
+            border-radius: 50px;
+            padding: 1rem 2.5rem;
+            text-align: center;
+            border-top: 4px solid #e76f51;
+        }
+
+        .question-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            color: var(--text-dark);
+            font-style: italic;
+        }
+
+        .question-text .highlight {
+            color: #e76f51;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="sky-background"></div>
+
+    <div class="task-slide">
+        <h1 class="slide-title">Task #2</h1>
+
+        <!-- Goal -->
+        <p class="goal-badge">
+            <strong>Help</strong> people see animals they couldn't <strong>perceive</strong> before
+        </p>
+
+        <p class="insight-text">
+            <i class="fas fa-lightbulb"></i> People often need <strong>subtle hints</strong> to be convinced
+        </p>
+
+        <!-- Buttons -->
+        <div class="toggle-buttons">
+            <button class="toggle-btn active" id="before-btn">Before</button>
+            <button class="toggle-btn" id="after-btn">After</button>
+        </div>
+
+        <!-- Before state -->
+        <div class="state-container" id="before-state">
+            <div class="concept-card">
+                <img src="../1_original.jpg" alt="Original cloud">
+            </div>
+            <div class="person-card">
+                <div class="person-icon before"><i class="fas fa-user"></i></div>
+                <p class="person-text">"I see nothing"</p>
+            </div>
+        </div>
+
+        <!-- After state -->
+        <div class="state-container hidden" id="after-state">
+            <div class="concept-card">
+                <img src="../1_original.jpg" alt="Enhanced cloud">
+                <div class="hint-overlay">
+                    <div class="head-circle"></div>
+                    <div class="head-label">Ear</div>
+                </div>
+            </div>
+            <div class="person-card">
+                <div class="person-icon after"><i class="fas fa-face-surprise"></i></div>
+                <p class="person-text">"Oh! A cat!"</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.getElementById('before-btn').addEventListener('click', function() {
+            document.getElementById('before-state').classList.remove('hidden');
+            document.getElementById('after-state').classList.add('hidden');
+            this.classList.add('active');
+            document.getElementById('after-btn').classList.remove('active');
+        });
+
+        document.getElementById('after-btn').addEventListener('click', function() {
+            document.getElementById('after-state').classList.remove('hidden');
+            document.getElementById('before-state').classList.add('hidden');
+            this.classList.add('active');
+            document.getElementById('before-btn').classList.remove('active');
+        });
+    </script>
+</body>
+</html>

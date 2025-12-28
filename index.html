@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diamonds In The Sky: Pareidolic Animals in Clouds | M.Sc. Thesis</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .slide-frame {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: linear-gradient(180deg, #1a4a6e 0%, #5BA3D9 50%, #87CEEB 100%);
+        }
+
+        .slide-counter {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            color: white;
+            font-family: 'Fira Code', monospace;
+            font-size: 1.3rem;
+            font-weight: 600;
+            z-index: 1000;
+            background: #7eb6d9;
+            padding: 14px 28px;
+            border-radius: 30px;
+            border: 2px solid #6aa6c9;
+            box-shadow: 0 4px 15px rgba(126, 182, 217, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .slide-counter img {
+            height: 28px;
+            width: auto;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 12px;
+            z-index: 1001;
+        }
+
+        .nav-btn {
+            width: 55px;
+            height: 55px;
+            background: #e76f51;
+            border: 2px solid #d35f47;
+            color: white;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(231, 111, 81, 0.4);
+        }
+
+        .nav-btn:hover {
+            background: #d35f47;
+            border-color: #c54f37;
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(231, 111, 81, 0.5);
+        }
+
+        .nav-btn:active {
+            transform: scale(0.95);
+        }
+
+        .nav-hint {
+            position: fixed;
+            bottom: 95px;
+            right: 30px;
+            color: rgba(255, 255, 255, 0.6);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            opacity: 0;
+            animation: fadeInOut 5s ease-in-out;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; }
+            20%, 80% { opacity: 1; }
+        }
+
+        .progress-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ffd700, #ff7e5f, #feb47b, #ffd700);
+            background-size: 300% 100%;
+            animation: shimmer 3s linear infinite;
+            transition: width 0.3s ease;
+            z-index: 1002;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 300% 50%; }
+        }
+
+        .fullscreen-btn {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(15px);
+            z-index: 1001;
+        }
+
+        .fullscreen-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.05);
+        }
+
+        /* Title overlay for loading */
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(180deg, #1a4a6e 0%, #2E78B7 50%, #87CEEB 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: white;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading">
+        <div class="loading-text">
+            <i class="fas fa-cloud" style="margin-right: 1rem;"></i>
+            Loading...
+        </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progress"></div>
+
+    <!-- Slide Container -->
+    <iframe id="slide-frame" class="slide-frame"></iframe>
+
+    <!-- Slide Counter -->
+    <div class="slide-counter" id="slide-counter">
+        <img src="diamond.png" alt="Diamond">
+        <span id="counter-text">1 / 20</span>
+    </div>
+
+    <!-- Fullscreen Button -->
+    <button class="fullscreen-btn" id="fullscreen-btn" title="Toggle fullscreen (F)">
+        <i class="fas fa-expand"></i>
+    </button>
+
+    <!-- Navigation Buttons -->
+    <div class="nav-buttons">
+        <button class="nav-btn" id="prev-btn" title="Previous slide">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="nav-btn" id="next-btn" title="Next slide">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+
+    <!-- Navigation Hint -->
+    <div class="nav-hint">Use arrow keys to navigate | F for fullscreen</div>
+
+    <script>
+        const slides = [
+            'slides/slide00_title_v2.html',
+            'slides/slide01_hook_v2.html',
+            'slides/slide02a_challenge_v2.html',
+            'slides/slide02b_existing_v2.html',
+            'slides/slide03_goals_v2.html',
+            'slides/slide05_approach_v2.html',
+            'slides/slide04_diffusion_fails_v2.html',
+            'slides/slide05a_dds_v2.html',
+            'slides/slide05b_dds_problem_v2.html',
+            'slides/slide06_mdds_v2.html',
+            'slides/slide06b_detection_v2.html',
+            'slides/slide07_validation_v2.html',
+            'slides/slide07a_experiments_v2.html',
+            'slides/slide07_dataset_v2.html',
+            'slides/slide08_results_gallery_v2.html',
+            'slides/slide10a_userstudy_design_v2.html',
+            'slides/slide10b_userstudy_results_v2.html',
+            'slides/slide12_contributions_v2.html',
+            'slides/slide13_future_v2.html',
+            'slides/slide14_thanks_v2.html'
+        ];
+
+        let currentSlide = 0;
+        const slideFrame = document.getElementById('slide-frame');
+        const progress = document.getElementById('progress');
+        const counterText = document.getElementById('counter-text');
+        const fullscreenBtn = document.getElementById('fullscreen-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const loading = document.getElementById('loading');
+
+        function loadSlide(index) {
+            if (index >= 0 && index < slides.length) {
+                slideFrame.style.opacity = '0';
+                setTimeout(() => {
+                    slideFrame.src = slides[index];
+                    currentSlide = index;
+                    updateProgress();
+                    updateCounter();
+                    updateButtonStates();
+                    slideFrame.style.opacity = '1';
+                }, 150);
+            }
+        }
+
+        slideFrame.style.transition = 'opacity 0.15s ease';
+
+        function updateProgress() {
+            const percentage = ((currentSlide + 1) / slides.length) * 100;
+            progress.style.width = percentage + '%';
+        }
+
+        function updateCounter() {
+            counterText.textContent = `${currentSlide + 1} / ${slides.length}`;
+        }
+
+        function updateButtonStates() {
+            prevBtn.style.opacity = currentSlide === 0 ? '0.3' : '1';
+            prevBtn.style.cursor = currentSlide === 0 ? 'not-allowed' : 'pointer';
+            nextBtn.style.opacity = currentSlide === slides.length - 1 ? '0.3' : '1';
+            nextBtn.style.cursor = currentSlide === slides.length - 1 ? 'not-allowed' : 'pointer';
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                loadSlide(currentSlide + 1);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                loadSlide(currentSlide - 1);
+            }
+        }
+
+        prevBtn.addEventListener('click', prevSlide);
+        nextBtn.addEventListener('click', nextSlide);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+            } else if (e.key === 'f' || e.key === 'F') {
+                toggleFullscreen();
+            } else if (e.key === 'Escape' && document.fullscreenElement) {
+                document.exitFullscreen();
+            }
+        });
+
+        // Touch/swipe navigation
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) nextSlide();
+            if (touchEndX > touchStartX + 50) prevSlide();
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+                fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
+            } else {
+                document.exitFullscreen();
+                fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+            }
+        }
+
+        fullscreenBtn.addEventListener('click', toggleFullscreen);
+
+        document.addEventListener('fullscreenchange', () => {
+            if (document.fullscreenElement) {
+                fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
+            } else {
+                fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+            }
+        });
+
+        // Hide loading and start
+        slideFrame.addEventListener('load', () => {
+            loading.classList.add('hidden');
+            // Preload next slide
+            if (currentSlide < slides.length - 1) {
+                const preload = document.createElement('link');
+                preload.rel = 'prefetch';
+                preload.href = slides[currentSlide + 1];
+            }
+        });
+
+        loadSlide(0);
+    </script>
+</body>
+</html>
